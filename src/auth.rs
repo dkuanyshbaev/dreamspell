@@ -9,10 +9,8 @@ use rocket::{
     Request,
 };
 
-const APIKEY: &str = "tzolkin";
-
 #[derive(Debug)]
-pub struct ApiKey(String);
+pub struct ApiKey(pub String);
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for ApiKey {
@@ -21,13 +19,7 @@ impl<'r> FromRequest<'r> for ApiKey {
     async fn from_request(request: &'r Request<'_>) -> request::Outcome<ApiKey, Self::Error> {
         let api_key = request.headers().get_one("Api-Key");
         match api_key {
-            Some(api_key) => {
-                if api_key.eq(&APIKEY.to_string()) {
-                    Outcome::Success(ApiKey(api_key.to_string()))
-                } else {
-                    Outcome::Failure((Status::Unauthorized, DreamspellError::Unauthorized))
-                }
-            }
+            Some(api_key) => Outcome::Success(ApiKey(api_key.to_string())),
             None => Outcome::Failure((Status::Unauthorized, DreamspellError::Unauthorized)),
         }
     }
