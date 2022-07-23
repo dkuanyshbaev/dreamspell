@@ -11,6 +11,8 @@ use rocket::{
 };
 use rocket_dyn_templates::Template;
 
+const APIKEY: &str = "tzolkin";
+
 #[macro_use]
 extern crate rocket;
 
@@ -51,10 +53,11 @@ impl<'r> FromRequest<'r> for ApiKey {
         let api_key = request.headers().get_one("Api-Key");
         match api_key {
             Some(api_key) => {
-                // TODO: check validity
-                println!("Api-Key: {}", api_key);
-
-                Outcome::Success(ApiKey(api_key.to_string()))
+                if api_key.eq(&APIKEY.to_string()) {
+                    Outcome::Success(ApiKey(api_key.to_string()))
+                } else {
+                    Outcome::Failure((Status::Unauthorized, DreamspellError::Unauthorized))
+                }
             }
             None => Outcome::Failure((Status::Unauthorized, DreamspellError::Unauthorized)),
         }
@@ -67,8 +70,7 @@ fn home() -> Template {
 }
 
 #[post("/calc", format = "application/json", data = "<date>")]
-async fn calc(key: ApiKey, date: String) -> content::RawJson<String> {
-    println!("Key: {}", key.0);
+async fn calc(_key: ApiKey, date: String) -> content::RawJson<String> {
     content::RawJson(date)
 }
 
