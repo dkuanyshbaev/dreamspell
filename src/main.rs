@@ -1,25 +1,23 @@
 // ---------------------------------------
 // Dreamspell server
 // ---------------------------------------
-use rocket::{form::Form, response::Redirect, State};
+use rocket::{
+    response::{content, Redirect},
+    State,
+};
 use rocket_dyn_templates::Template;
 
 #[macro_use]
 extern crate rocket;
-
-#[derive(FromForm)]
-struct FormData {
-    question: String,
-}
 
 #[get("/")]
 fn home() -> Template {
     Template::render("home", rocket_dyn_templates::context! {})
 }
 
-#[post("/question", data = "<form_data>")]
-async fn calc(form_data: Form<FormData>) -> Redirect {
-    Redirect::to("/")
+#[post("/calc", format = "application/json", data = "<date>")]
+async fn calc(date: String) -> content::RawJson<String> {
+    content::RawJson(date)
 }
 
 #[catch(404)]
