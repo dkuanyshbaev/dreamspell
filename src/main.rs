@@ -3,7 +3,9 @@
 // ---------------------------------------
 use rocket::{
     fairing::{Fairing, Info, Kind},
-    http::Header,
+    http::{Header, Status},
+    outcome::Outcome,
+    request::{self, FromRequest},
     response::{content, Redirect},
     Request, Response,
 };
@@ -22,7 +24,6 @@ impl Fairing for Cors {
             kind: Kind::Response,
         }
     }
-
     async fn on_response<'r>(&self, _request: &'r Request<'_>, response: &mut Response<'r>) {
         response.set_header(Header::new("Access-Control-Allow-Origin", "*"));
         response.set_header(Header::new(
@@ -34,13 +35,40 @@ impl Fairing for Cors {
     }
 }
 
+#[derive(Debug)]
+pub enum DreamspellError {
+    Unauthorized,
+}
+
+#[derive(Debug)]
+struct ApiKey(String);
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for ApiKey {
+    type Error = DreamspellError;
+
+    async fn from_request(request: &'r Request<'_>) -> request::Outcome<ApiKey, Self::Error> {
+        let api_key = request.headers().get_one("Api-Key");
+        match api_key {
+            Some(api_key) => {
+                // TODO: check validity
+                println!("Api-Key: {}", api_key);
+
+                Outcome::Success(ApiKey(api_key.to_string()))
+            }
+            None => Outcome::Failure((Status::Unauthorized, DreamspellError::Unauthorized)),
+        }
+    }
+}
+
 #[get("/")]
 fn home() -> Template {
     Template::render("home", rocket_dyn_templates::context! {})
 }
 
 #[post("/calc", format = "application/json", data = "<date>")]
-async fn calc(date: String) -> content::RawJson<String> {
+async fn calc(key: ApiKey, date: String) -> content::RawJson<String> {
+    println!("Key: {}", key.0);
     content::RawJson(date)
 }
 
