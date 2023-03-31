@@ -1,5 +1,0 @@
-{% extends "base" %}
-
-{% block content %}
-<h4>Welcome to Dreamspell!</h4>
-{% endblock content %}

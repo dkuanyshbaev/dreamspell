@@ -1,9 +1,8 @@
 // ---------------------------------------
 // Dreamspell tzolkin core
 // ---------------------------------------
-// use crate::descriptions::description;
 use crate::tables::*;
-use rocket::serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Seal {
@@ -17,9 +16,9 @@ struct Seal {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Seals(Vec<Seal>);
+// pub struct Seals([Seal; 20]);
 
 #[derive(Serialize, Deserialize)]
-#[serde(crate = "rocket::serde")]
 pub struct Tzolkin {
     archetype_name: String,
     archetype_image: String,
@@ -33,7 +32,7 @@ pub struct Tzolkin {
 }
 
 impl Tzolkin {
-    pub fn calc(seals: &Seals, parts: &[u32; 3]) -> Self {
+    pub fn new(seals: &Seals, parts: &[u32; 3]) -> Self {
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
 
@@ -55,6 +54,20 @@ type_name: "Полководец".to_string(),
 type_image: "".to_string(),
 type_description: "Ты ведешь себя, как Полководец: Ни веселый, ни грустный, ни добрый ни злой. Загадочный и томный, ведомый инстинктом, обанянием и осязанием. Прагматичный альтруист. который вдохновлен самоотверженной заботой о других и видит в этом заботу о себе.
 При принятии решений важно учитывать, где чьи интересы и не действовать себе во вред, но и понимать о пользе общего блага.".to_string(),
+        }
+    }
+
+    pub fn empty() -> Self {
+        Self {
+            archetype_name: "".to_string(),
+            archetype_image: "".to_string(),
+            archetype_description: "".to_string(),
+            portrait_name: "".to_string(),
+            portrait_image: "".to_string(),
+            portrait_description: "".to_string(),
+            type_name: "".to_string(),
+            type_image: "".to_string(),
+            type_description: "".to_string(),
         }
     }
 
