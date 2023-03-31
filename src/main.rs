@@ -1,16 +1,19 @@
 // ---------------------------------------
 // Dreamspell server
 // ---------------------------------------
+use crate::tzolkin::{Seals, Tzolkin};
 use rocket::{
-    response::Redirect,
-    serde::{json::Json, Serialize},
+    response::{status, Redirect},
+    serde::json::Json,
     State,
 };
 use rocket_dyn_templates::Template;
+use std::{fs, process};
 
 pub mod auth;
 pub mod config;
 pub mod cors;
+pub mod descriptions;
 pub mod error;
 pub mod tables;
 pub mod tzolkin;
@@ -18,12 +21,7 @@ pub mod tzolkin;
 #[macro_use]
 extern crate rocket;
 
-#[derive(Serialize)]
-#[serde(crate = "rocket::serde")]
-struct TzolkinData {
-    kin: u32,
-    archetype: (u32, u32),
-}
+const SEALS: &str = "resources/seals.json";
 
 #[get("/")]
 fn home() -> Template {
@@ -33,22 +31,23 @@ fn home() -> Template {
 #[post("/calc", format = "application/json", data = "<date>")]
 async fn calc(
     config: &State<config::Config>,
+    seals: &State<Seals>,
     key: auth::ApiKey,
     date: String,
-) -> Json<TzolkinData> {
-    let mut kin = 0;
-    let mut archetype = (0, 0);
-    if config.api_key.eq(&key.0) {
-        let date_parts: [u32; 3] = date
-            .split(".")
-            .map(|s| s.parse::<u32>().unwrap_or(0))
-            .collect::<Vec<u32>>()
-            .try_into()
-            .unwrap_or([0; 3]);
-        kin = tzolkin::kin(&date_parts);
-        archetype = tzolkin::archetype(kin);
+) -> Result<Json<Tzolkin>, status::Unauthorized<()>> {
+    if !config.api_key.eq(&key.0) {
+        Err(status::Unauthorized::<()>(None))
+    } else {
+        Ok(Json(Tzolkin::calc(
+            seals.inner(),
+            &date
+                .split(".")
+                .map(|s| s.parse::<u32>().unwrap_or(0))
+                .collect::<Vec<u32>>()
+                .try_into()
+                .unwrap_or([0; 3]),
+        )))
     }
-    Json(TzolkinData { kin, archetype })
 }
 
 #[options("/<_..>")]
@@ -66,10 +65,15 @@ pub fn internal_error() -> Redirect {
 
 #[launch]
 fn rocket() -> _ {
-    let config = config::Config::new().unwrap_or_else(|err| {
-        println!("Problem parsing config: {}", err);
-        std::process::exit(1);
+    let config = config::Config::new().unwrap_or_else(|_| {
+        println!("APIKEY in env!");
+        process::exit(1);
     });
+
+    let seals = {
+        let seals = fs::read_to_string(&SEALS).expect("Can't find seals file");
+        serde_json::from_str::<Seals>(&seals).expect("Can't parse seals file")
+    };
 
     rocket::build()
         .mount("/", routes![home, calc, options])
@@ -77,4 +81,5 @@ fn rocket() -> _ {
         .attach(Template::fairing())
         .attach(cors::Cors)
         .manage(config)
+        .manage(seals)
 }

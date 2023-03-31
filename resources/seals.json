@@ -1,0 +1,18 @@
+[
+    {
+        "name": "name",
+        "image": "image",
+        "archetype": "archetype",
+        "archetype_description": "archetype_description",
+        "portrait_description": "portrait_description",
+        "type_description": "type_description"
+    },
+    {
+        "name": "name",
+        "image": "image",
+        "archetype": "archetype",
+        "archetype_description": "archetype_description",
+        "portrait_description": "portrait_description",
+        "type_description": "type_description"
+    }
+]
