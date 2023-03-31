@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "name": "name",
         "image": "image",
         "archetype": "archetype",
@@ -8,6 +9,7 @@
         "type_description": "type_description"
     },
     {
+        "id": 2,
         "name": "name",
         "image": "image",
         "archetype": "archetype",

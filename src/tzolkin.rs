@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Seal {
+    id: u8,
     name: String,
     image: String,
     archetype: String,
@@ -16,7 +17,6 @@ struct Seal {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Seals(Vec<Seal>);
-// pub struct Seals([Seal; 20]);
 
 #[derive(Serialize, Deserialize)]
 pub struct Tzolkin {
@@ -35,25 +35,26 @@ impl Tzolkin {
     pub fn new(seals: &Seals, parts: &[u32; 3]) -> Self {
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
-
-        // ???
-        let seal = &seals.0.get(archetype.0 as usize);
+        let main_seal = &seals.0.get(archetype.0 as usize);
         let type_seal = &seals.0.get(archetype.1 as usize);
 
-        Tzolkin {
-            archetype_name: "Шаман-Полководец".to_string(),
-            archetype_image: "".to_string(),
-            archetype_description: "Рассудительный циник и здравый эгоист. Не весёлый и не грустный. Ты - самый трезвый человек на вечеринке, который развозит всех по домам. Потому что заботливый и не хмелеешь так, как остальные.".to_string(),
-            portrait_name: "Шаман".to_string(),
-            portrait_image: "".to_string(),
-            portrait_description: "Путешественник по мирам духов. Обладаешь осознанным рептильным мозгом - способностью предельно хладнокровно и прагматично с точки зрения того, что мы все - отдельные живые организмы и задача каждого из нас - выжить.
-Всегда отмечаешь и ценишь альтруизм со стороны других и сам умеешь заботиться. Не хмелеешь в общепринятом понимании. Часть тебя всегда трезва и оценивает обстановку.
-Тело диктует и руководит. Важно слушаться своих инстинктов. Сексуальное притяжение - повод для знакомства, неприятный запах от человека-повод не общаться с ним.
-Негативное проявление печати: Подверженностью влиянию эмоций, истеричность. Зацикленность на физическом теле и ощущениях. Саморазрушительная жертвенность".to_string(),
-type_name: "Полководец".to_string(),
-type_image: "".to_string(),
-type_description: "Ты ведешь себя, как Полководец: Ни веселый, ни грустный, ни добрый ни злой. Загадочный и томный, ведомый инстинктом, обанянием и осязанием. Прагматичный альтруист. который вдохновлен самоотверженной заботой о других и видит в этом заботу о себе.
-При принятии решений важно учитывать, где чьи интересы и не действовать себе во вред, но и понимать о пользе общего блага.".to_string(),
+        if main_seal.is_none() || type_seal.is_none() {
+            Self::empty()
+        } else {
+            let main_seal = main_seal.unwrap();
+            let type_seal = type_seal.unwrap();
+
+            Self {
+                archetype_name: main_seal.archetype.to_owned(),
+                archetype_image: main_seal.image.to_owned(),
+                archetype_description: main_seal.archetype_description.to_owned(),
+                portrait_name: main_seal.archetype.to_owned(),
+                portrait_image: main_seal.image.to_owned(),
+                portrait_description: main_seal.portrait_description.to_owned(),
+                type_name: type_seal.archetype.to_owned(),
+                type_image: type_seal.image.to_owned(),
+                type_description: type_seal.archetype_description.to_owned(),
+            }
         }
     }
 
@@ -77,10 +78,12 @@ type_description: "Ты ведешь себя, как Полководец: Ни
             return 0;
         }
         let year_index = year as f32 - ((year as f32 / 52_f32).floor() * 52_f32);
+
         let mut kin = day + MONTH_TABLE[month as usize - 1] + YEAR_TABLE[year_index as usize];
         if kin > 260 {
             kin = kin - 260
         }
+
         kin
     }
 
