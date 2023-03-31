@@ -53,7 +53,7 @@ async fn main() {
         .with_state(state)
         .fallback(nothing);
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8000));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8888));
     println!("Listening on {}", addr);
 
     axum::Server::bind(&addr)
@@ -80,7 +80,7 @@ async fn tzolkin(
                 &state.seals,
                 &input
                     .birth_date
-                    .split(".")
+                    .split("-")
                     .map(|s| s.parse::<u32>().unwrap_or(0))
                     .collect::<Vec<u32>>()
                     .try_into()
