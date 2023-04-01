@@ -55,7 +55,7 @@ impl Tzolkin {
                 portrait_description: main_seal.portrait_description.to_owned(),
                 type_name: type_seal.archetype.to_owned(),
                 type_image: type_seal.image.to_owned(),
-                type_description: type_seal.archetype_description.to_owned(),
+                type_description: type_seal.type_description.to_owned(),
             }
         }
     }
