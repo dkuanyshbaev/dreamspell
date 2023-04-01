@@ -35,10 +35,8 @@ impl Tzolkin {
     pub fn new(seals: &Seals, parts: &[u32; 3]) -> Self {
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
-        // let main_seal = &seals.0.get(archetype.0 as usize);
-        // let type_seal = &seals.0.get(archetype.1 as usize);
-        let main_seal = &seals.0.get(0 as usize);
-        let type_seal = &seals.0.get(1 as usize);
+        let main_seal = &seals.0.get(archetype.0 as usize);
+        let type_seal = &seals.0.get(archetype.1 as usize);
 
         if main_seal.is_none() || type_seal.is_none() {
             Self::empty()
