@@ -35,14 +35,25 @@ impl Tzolkin {
     pub fn new(seals: &Seals, parts: &[u32; 3]) -> Self {
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
-        let main_seal = &seals.0.get(archetype.0 as usize);
-        let type_seal = &seals.0.get(archetype.1 as usize);
+        let main_seal = &seals.0.get((archetype.0 - 1) as usize);
+        let type_seal = &seals.0.get((archetype.1 - 1) as usize);
+
+        println!("archetype: {:?}", archetype);
 
         if main_seal.is_none() || type_seal.is_none() {
             Self::empty()
         } else {
             let main_seal = main_seal.unwrap();
             let type_seal = type_seal.unwrap();
+
+            println!(
+                "main_seal: id: {:?}, name: {:?}",
+                main_seal.id, main_seal.name
+            );
+            println!(
+                "type_seal: id: {:?}, name: {:?}",
+                type_seal.id, type_seal.name
+            );
 
             Self {
                 archetype_name: main_seal.archetype.to_owned(),
@@ -84,10 +95,13 @@ impl Tzolkin {
             kin = kin - 260
         }
 
+        println!("year: {:?}, month: {:?}, day:{:?}", year, month, day);
+        println!("kin: {:?}", kin);
+
         kin
     }
 
     fn archetype(kin: u32) -> (u32, u32) {
-        ARCHETYPE_TABLE[kin as usize]
+        ARCHETYPE_TABLE[(kin - 1) as usize]
     }
 }
