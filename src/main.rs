@@ -21,6 +21,7 @@ pub mod tables;
 pub mod tzolkin;
 
 const SEALS: &str = "resources/seals.json";
+const SEALS_EN: &str = "resources/seals_en.json";
 
 #[derive(Deserialize)]
 struct Input {
@@ -30,6 +31,7 @@ struct Input {
 struct DreamspellState {
     secret: String,
     seals: Seals,
+    seals_en: Seals,
 }
 
 #[tokio::main]
@@ -39,11 +41,20 @@ async fn main() {
         let seals = fs::read_to_string(&SEALS).expect("Can't find seals file");
         serde_json::from_str::<Seals>(&seals).expect("Can't parse seals file")
     };
-    let state = Arc::new(DreamspellState { secret, seals });
+    let seals_en = {
+        let seals = fs::read_to_string(&SEALS_EN).expect("Can't find seals en file");
+        serde_json::from_str::<Seals>(&seals).expect("Can't parse seals en file")
+    };
+    let state = Arc::new(DreamspellState {
+        secret,
+        seals,
+        seals_en,
+    });
 
     let dreamspell = Router::new()
         .route("/", get(home))
         .route("/tzolkin", post(tzolkin))
+        .route("/tzolkin_en", post(tzolkin_en))
         .layer(
             CorsLayer::new()
                 .allow_headers([AUTHORIZATION, CONTENT_TYPE])
@@ -78,6 +89,30 @@ async fn tzolkin(
             StatusCode::OK,
             Json(Tzolkin::new(
                 &state.seals,
+                &input
+                    .birth_date
+                    .split("-")
+                    .map(|s| s.parse::<u32>().unwrap_or(0))
+                    .collect::<Vec<u32>>()
+                    .try_into()
+                    .unwrap_or([0; 3]),
+            )),
+        )
+    }
+}
+
+async fn tzolkin_en(
+    AuthBearer(token): AuthBearer,
+    State(state): State<Arc<DreamspellState>>,
+    Json(input): Json<Input>,
+) -> impl IntoResponse {
+    if !token.eq(&state.secret) {
+        (StatusCode::UNAUTHORIZED, Json(Tzolkin::empty()))
+    } else {
+        (
+            StatusCode::OK,
+            Json(Tzolkin::new(
+                &state.seals_en,
                 &input
                     .birth_date
                     .split("-")
