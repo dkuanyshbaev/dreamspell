@@ -1,30 +1,30 @@
 [
     {
         "id": 1,
-        "name": "Дракон",
+        "name": "The Dragon",
         "image": "01.jpg",
-        "archetype": "Алхимик",
-        "archetype_description": "Хранитель тайн мироздания, которые раскроются только тем, кто сможет заговорить на твоём языке. <br><br>Если собеседник не может приложить усилия к тому, чтобы тебя понять, то это проблема собеседника. Задача Алхимика - нести Знание и в совершенстве следовать ему.",
-        "portrait_description": "Ты знаешь, чего ты не знаешь. Вечный студент. С рождения видишь мир, как единое целое и как сеть взаимосвязей. Стараешься внести свой вклад в происходящее, от чего зачастую страдаешь, поскольку энергия может течь лишь туда, где её ждут. А юный Алхимик из доброты лезет без спроса - в итоге это для него часто выходит боком.<br> Твоё видение мира - сокровище, которое необходимо оберегать, а не растрачивать, поэтому у него есть охранник: твой своеобразный язык. Только тот, кто способен приложить усилия к тому, чтобы понять тебя, может получить те блага, которыми ты располагаешь.<br><br> Круг общения Алхимиков зачастую узкий из-за того, что они оказываются неправильно понятыми и обиженными аутсайдерами. Случается это потому, что они часто не ценят своё видение и дают советы, когда не просят. Урок состоит в том, чтобы не отвернуться от невежд, а найти способ совершенного проявления своего Знания - тогда люди придут за советом сами. Вот почему Алхимику важно учиться дозировать информацию, смотреть, как она 'заходит', имеет ли эффект сказанное.<br><br> Негативные проявления Алхимиков: тяжёлые в общении, ищут свободные уши, чтобы выговориться, навязчивые советчики, манипулирующие своим превосходством; аморальное поведение, обида на весь мир за непонимание.",
-        "type_description": "Ведёшь себя, как Алхимик:<br>Хранитель тайн мироздания, своеобразный в общении, склоннный к тому, чтобы 'грузить', и заботящийся о тех, кто смог его понять. Хороший советчик, если на это есть запрос.<br> При принятии решений тебе важно ориентироваться на общую органичность со своей картиной мироздания и не идти на опасные компромиссы с совестью."
+        "archetype": "The Alchemist",
+        "archetype_description": "The keeper of the universe's secrets, which will be revealed only to those who can speak your language.<br><br>If a person cannot make an effort to understand you, it's his problem, not yours. The task of the Alchemist is to carry the Knowledge and follow it perfectly.",
+        "portrait_description": "You know what you don't know. An eternal student. From the very birth, you see the world as a whole and as a network of interconnections. You love and try to contribute to what is happening, from which sometimes suffer, because energy can only flow to where it is welcomed. When Alchemist, out of kindness, intrudes without asking - as a result, this often turns out a proper mess for him. He might even end up being the one to blame for the failure, when he attempts to saave the situation.<br><br>Your vision of the world is a treasure that needs to be protected, not wasted, so it has a guard: your peculiar language. Only those who are able to make an effort to understand you can receive the benefits that you posess.<br><br>The social circle of an Alchemist is often narrow due to the fact that one is often misunderstood and having accepted that, resorts to being a resentful outsider. This happens because they do not often value their vision, because things they say are so obvious for them. The lesson for an Alchemist  is not to turn away from the ignorant, but to find a way to perfectly manifest your Knowledge - then people will come to him for advice themselves. That is why it is important for an Alchemist to learn how to dose information, to see how it is 'taken in', whether something that has been said has an effect.<br><br>Negative manifestations of Alchemists: they are difficult to communicate, looking for free ears to speak out, obsessive advisers, manipulating their superiority; immoral behavior, resentment at the whole world for misunderstanding.",
+        "type_description": "Acting like a typical Alchemist:<br>The keeper of the universe's secrets, peculiar in communication, inclined to overload others with information, and caring for those who are able to understand him. A good advisor if requested.<br><br>When making decisions, it is important for you to focus on the overall organicity with your picture of the universe and not make dangerous compromises with your conscience."
     },
     {
         "id": 2,
-        "name": "Ветер",
+        "name": "The Wind",
         "image": "02.jpg",
-        "archetype": "Шут",
-        "archetype_description": "Ты - это твой внутренний ребёнок, весёлый, смелый, жестокий, искренний, хитрый, увлечённый. В нём сила наполнять чувством всё, что делаешь.<br><br> Искренность во всём, в каждом мгновении. Смех - оружие Шута для борьбы со внутренними демонами. Не забывай дышать!",
-        "portrait_description": "Носитель качества, которое необходимо развивать в себе каждому человеку: пример или угрожающее предостережение для других о том, как надо и не надо делать. Шут - это внутренний ребенок, с его серьёзностью и эмоциональностью, смелостью и искренностью.<br><br> Шут или блаженный - это человек при дворе, который может сказать то, что не может себе позволить сказать даже Владыка. Среди Шутов встречается особенно много певцов. Вдохновенный оратор, который живёт тем, чтобы нести в массы Знание. Важен эмоционально-чувственный вклад в каждое совершаемое действие, плавность и текучесть. Следует следить за дыханием, чтобы контролировать ум. Веселье и смех помогают, особенно хороши дыхательные практики.<br><br> Негативные проявления Шутов: мощный внутренний монолог, жестокость, неконтролируемые эмоции. Не верь всему, что думаешь!",
-        "type_description": "Ведёшь себя, как Шут:<br>Меньше думать, больше смеяться! Умеешь просто и понятно говорить о сложном, вдохновенный оратор, которому нужно следить за тем, чтобы его не заносило. Мысли имеют способность опережать эмоции, тогда начинаешь 'накручивать себе' и суетиться. Важно не забывать дышать.<br><br> Принимая решение, следует сделать глубокий вдох и спросить себя: а что мне подсказывает сердце?"
+        "archetype": "The Fool",
+        "archetype_description": "",
+        "portrait_description": "",
+        "type_description": ""
     },
     {
         "id": 3,
-        "name": "Ночь",
+        "name": "The Night",
         "image": "03.jpg",
-        "archetype": "Джинн",
-        "archetype_description": "Ты - космос! Живое доказательство того, что каждый живёт в своей сказке и сам выбирает, какой ей быть: страшной или счастливой. <br><br> Мечтать так же важно, как и держать контакт с реальностью. Твоя интуиция всегда подскажет, где искать сокровища.",
-        "portrait_description": "Живёшь в уникальном мире, который сам себе придумал. Залог успеха для тебя - умело держать баланс между фантазией и реальностью, Майе в которой каждый из нас живёт. Важно мечтать, то есть четко формулировать свои желания. Если Джинн в этом разобрался, то его интуиция подскажет, где искать необходимое. <br><br>Ты пришёл в этот мир для того, чтобы понять, как работает сознание и произвести глубокое исцеление своей души, то есть договориться с тем Джинном, который слышит любую его мысль и говорит: слушаю и повинуюсь! Это сила Изобилия, олицетворяющая собой бездонность синего цвета. Есть талант к продюсированию, созданию необычных и продуманных образов. <br><br> Негативные проявления Джиннов: некомпетентность, пустые фантазии, заблуждение, а также склонность к формированию глубоких подсознательных установок, которые могут быть как продуктивными, так и деструктивными.",
-        "type_description": "Ведёшь себя, как Джинн:<br>Со стороны кажется, что ты живёшь в мире своих фантазий, однако умеешь фокусироваться на предмете, развивая компетентность. А как только она развита, реализация задуманного становится делом техники, поэтому в первую очередь важно понимать, чего ты на самом деле хочешь.<br><br>Критически важные моменты в принятии решений: честность с собой, осознание своих желаний и уверенность в том, что заблуждение исключено."
+        "archetype": "Genie",
+        "archetype_description": "",
+        "portrait_description": "",
+        "type_description": ""
     },
     {
         "id": 4,
