@@ -38,6 +38,11 @@ impl Tzolkin {
         let main_seal = &seals.0.get((archetype.0 - 1) as usize);
         let type_seal = &seals.0.get((archetype.1 - 1) as usize);
 
+        if archetype.0 == archetype.1 {
+            // TODO: typical
+            println!("typical");
+        }
+
         println!("archetype: {:?}", archetype);
 
         if main_seal.is_none() || type_seal.is_none() {
@@ -92,7 +97,7 @@ impl Tzolkin {
 
         let mut kin = day + MONTH_TABLE[month as usize - 1] + YEAR_TABLE[year_index as usize];
         if kin > 260 {
-            kin = kin - 260
+            kin -= 260
         }
 
         println!("year: {:?}, month: {:?}, day:{:?}", year, month, day);

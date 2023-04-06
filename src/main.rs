@@ -38,11 +38,11 @@ struct DreamspellState {
 async fn main() {
     let secret = env::var("SECRET").expect("SECRET must be set");
     let seals = {
-        let seals = fs::read_to_string(&SEALS).expect("Can't find seals file");
+        let seals = fs::read_to_string(SEALS).expect("Can't find seals file");
         serde_json::from_str::<Seals>(&seals).expect("Can't parse seals file")
     };
     let seals_en = {
-        let seals = fs::read_to_string(&SEALS_EN).expect("Can't find seals en file");
+        let seals = fs::read_to_string(SEALS_EN).expect("Can't find seals en file");
         serde_json::from_str::<Seals>(&seals).expect("Can't parse seals en file")
     };
     let state = Arc::new(DreamspellState {
@@ -91,7 +91,7 @@ async fn tzolkin(
                 &state.seals,
                 &input
                     .birth_date
-                    .split("-")
+                    .split('-')
                     .map(|s| s.parse::<u32>().unwrap_or(0))
                     .collect::<Vec<u32>>()
                     .try_into()
@@ -115,7 +115,7 @@ async fn tzolkin_en(
                 &state.seals_en,
                 &input
                     .birth_date
-                    .split("-")
+                    .split('-')
                     .map(|s| s.parse::<u32>().unwrap_or(0))
                     .collect::<Vec<u32>>()
                     .try_into()
