@@ -13,6 +13,7 @@ struct Seal {
     archetype_description: String,
     portrait_description: String,
     type_description: String,
+    type_name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -37,29 +38,16 @@ impl Tzolkin {
         let archetype = Self::archetype(kin);
         let main_seal = &seals.0.get((archetype.0 - 1) as usize);
         let type_seal = &seals.0.get((archetype.1 - 1) as usize);
-
         if archetype.0 == archetype.1 {
             // TODO: typical
             println!("typical");
         }
-
-        println!("archetype: {:?}", archetype);
 
         if main_seal.is_none() || type_seal.is_none() {
             Self::empty()
         } else {
             let main_seal = main_seal.unwrap();
             let type_seal = type_seal.unwrap();
-
-            println!(
-                "main_seal: id: {:?}, name: {:?}",
-                main_seal.id, main_seal.name
-            );
-            println!(
-                "type_seal: id: {:?}, name: {:?}",
-                type_seal.id, type_seal.name
-            );
-
             Self {
                 archetype_name: main_seal.archetype.to_owned(),
                 archetype_image: main_seal.image.to_owned(),
@@ -73,7 +61,6 @@ impl Tzolkin {
             }
         }
     }
-
     pub fn empty() -> Self {
         Self {
             archetype_name: "".to_string(),
@@ -87,25 +74,18 @@ impl Tzolkin {
             type_description: "".to_string(),
         }
     }
-
     fn kin(parts: &[u32; 3]) -> u32 {
         let (year, month, day) = (parts[0], parts[1], parts[2]);
         if day == 0 || month == 0 || year == 0 {
             return 0;
         }
         let year_index = year as f32 - ((year as f32 / 52_f32).floor() * 52_f32);
-
         let mut kin = day + MONTH_TABLE[month as usize - 1] + YEAR_TABLE[year_index as usize];
         if kin > 260 {
             kin -= 260
         }
-
-        println!("year: {:?}, month: {:?}, day:{:?}", year, month, day);
-        println!("kin: {:?}", kin);
-
         kin
     }
-
     fn archetype(kin: u32) -> (u32, u32) {
         ARCHETYPE_TABLE[(kin - 1) as usize]
     }
