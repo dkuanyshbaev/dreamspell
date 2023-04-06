@@ -89,6 +89,7 @@ async fn tzolkin(
             StatusCode::OK,
             Json(Tzolkin::new(
                 &state.seals,
+                false,
                 &input
                     .birth_date
                     .split('-')
@@ -113,6 +114,7 @@ async fn tzolkin_en(
             StatusCode::OK,
             Json(Tzolkin::new(
                 &state.seals_en,
+                true,
                 &input
                     .birth_date
                     .split('-')

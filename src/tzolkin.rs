@@ -13,7 +13,6 @@ struct Seal {
     archetype_description: String,
     portrait_description: String,
     type_description: String,
-    type_name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -33,23 +32,28 @@ pub struct Tzolkin {
 }
 
 impl Tzolkin {
-    pub fn new(seals: &Seals, parts: &[u32; 3]) -> Self {
+    pub fn new(seals: &Seals, en: bool, parts: &[u32; 3]) -> Self {
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
         let main_seal = &seals.0.get((archetype.0 - 1) as usize);
         let type_seal = &seals.0.get((archetype.1 - 1) as usize);
-        if archetype.0 == archetype.1 {
-            // TODO: typical
-            println!("typical");
-        }
 
         if main_seal.is_none() || type_seal.is_none() {
             Self::empty()
         } else {
             let main_seal = main_seal.unwrap();
             let type_seal = type_seal.unwrap();
+            let name = if main_seal.name.eq(&type_seal.name) {
+                if !en {
+                    ["Классический".to_owned(), type_seal.name.to_owned()].join(" ")
+                } else {
+                    ["Classic".to_owned(), type_seal.name.to_owned()].join(" ")
+                }
+            } else {
+                [main_seal.name.to_owned(), type_seal.name.to_owned()].join(" - ")
+            };
             Self {
-                archetype_name: main_seal.archetype.to_owned(),
+                archetype_name: name.to_owned(),
                 archetype_image: main_seal.image.to_owned(),
                 archetype_description: main_seal.archetype_description.to_owned(),
                 portrait_name: main_seal.archetype.to_owned(),
