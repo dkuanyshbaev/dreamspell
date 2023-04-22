@@ -1,0 +1,239 @@
+ <script>
+    myModal.addEventListener('shown.bs.modal', function () {
+  	myInput.focus()
+})
+  function call_calc() {
+   let birth_date = document.getElementById("exampleFormControlInput1").value;
+    let xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://dreamspell.online/tzolkin");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer tzolkin");
+        	xhr.onload = function () {
+            if (xhr.status == 200) {
+                var jr = JSON.parse(xhr.responseText);
+   
+                document.getElementById('arch_name').innerHTML = jr.archetype_name;
+   document.getElementById('arch_desc').innerHTML = jr.archetype_description;
+      document.getElementById('arch_img').src = "https://dreamspell.online/seals/" + jr.archetype_image;
+                document.getElementById('port_name').innerHTML = jr.portrait_name;
+   document.getElementById('port_desc').innerHTML = jr.portrait_description;
+   document.getElementById('port_img').src = "https://dreamspell.online/seals/" + jr.portrait_image;
+      
+  
+document.getElementById('type_name').innerHTML = jr.type_name;
+   document.getElementById('type_desc').innerHTML = jr.type_description;
+   document.getElementById('type_img').src = "https://dreamspell.online/seals/" + jr.type_image;
+
+   document.getElementById('top_type_img').src = "https://dreamspell.online/seals/" + jr.type_image;
+   
+   
+   
+            } else {
+                console.log('error');
+            }
+        };
+   console.log(birth_date);
+   	xhr.send(JSON.stringify({ "birth_date": birth_date }));
+        console.log(birth_date);
+  }
+</script>
+
+
+<style>
+  .modaling{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1060;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+    flex-direction: row;
+    align-items: center;
+  }
+        @font-face {
+        font-family: Montserrat;
+        src: url("fonts/Montserrat-Regular.otf") format("opentype");
+    }
+
+      @font-face {
+          font-family: Montserrat;
+          font-weight: 700;
+          src: url("fonts/Montserrat-Bold.otf") format("opentype");
+      }
+      *{
+        font-family: Montserrat;
+      }
+      .btn.picker-btn.mt-3.mb-4 {
+    box-shadow: none;
+    outline: none;
+}
+#exampleFormControlInput1 {
+    box-shadow: none;
+    outline: none;
+}
+        .picker-box{
+          max-width: 400px;
+          margin: auto;
+          margin-top: 5vh;
+          border:1px solid black;
+      }
+        .picker-box h4{
+          font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #2F2726;
+    /* font-size: 20px; */
+    color: #2F2726;
+    font-weight: 700;
+      }
+        .picker-box p{
+          margin-top: 6px;
+    ont-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    opacity: 0.6;
+    color: #2F272665;
+          
+      }
+        .picker{
+          width: 70%;
+          text-align: center;
+          margin: auto;
+          font-weight: 700;
+          color: #321414;
+          font-size: 20px;
+          border-radius: 10px;
+          border:1px solid #2F2726;
+          text-transform: uppercase;
+      }
+        
+        .picker-btn{
+         font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 21px;
+    color: #FFFFFF;
+    background-color: #2F2726;
+    width: 90%;
+    margin: auto;
+    color: white;
+    border-radius: 10px;
+
+        }
+        
+        .picker-btn:hover{
+          color: #321414;
+          border: 1px solid #321414;
+            background-color: white;
+        }
+        #Modal1{
+            margin-top: 30vh;
+        }
+        .modal-body.px-4 {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 23px;
+    color: #000000;
+}
+        .modal-body.px-4 h3 {
+         font-family: 'Montserrat';
+         font-style: normal;
+         font-weight: 700;
+         font-size: 20px;
+         line-height: 24px;
+          color: #000000;
+          }
+          .text-center.Архетип {
+    font-size: 35px !important;
+}
+        .modal-body.px-4 h5 {
+         font-family: 'Montserrat';
+         font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 24px;
+        color: #000000;
+         }
+        h3{
+          font-weight: 700;
+        }
+        h5{
+          font-weight: 400;
+        }
+  </style>
+
+    <div class="modaling "  id="Modal1" tabindex="-1" style="display: none;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header " style="border: none;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            <div class="modal-body">
+              <p>...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="modaling "  id="Modal2" tabindex="-1" style="display:none">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header " style="border: none;">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-4">
+              <p class="main-para">
+                  <img src="https://dreamspell.online/seals/dreamspell.jpg" id ='top_type_img' class="d-block m-auto" width="40px" alt="placeholder"> 
+                <img src="https://dreamspell.online/seals/dreamspell.jpg" class=" d-block m-auto" id='arch_img' width="90px" alt="placeholder"> 
+                <h3 class="text-center Архетип"> Архетип: </h3>
+                <h5 class="text-center" id="arch_name"></h5>
+                <br>
+                <div id="arch_desc"></div>
+                <br>
+                <br>
+                <img src="https://dreamspell.online/seals/dreamspell.jpg" class="mt-3 d-block m-auto" id='port_img' width="90px" alt="placeholder"> 
+                <br>
+                <h3 class="text-center"> Портрет: </h3>
+                <h5 class="text-center" id="port_name"></h5>
+              <br>
+                 <div id="port_desc"></div>
+                <br>
+                <br>
+                <img src="https://dreamspell.online/seals/dreamspell.jpg" id='type_img' class="d-block m-auto" width="40px" alt="placeholder"> 
+                <br>
+                <h3 class="text-center"> Тип: </h3>
+                <h5 class="text-center" id="type_name"></h5>
+                    <br>
+              <div id="type_desc"></div>
+              <br><br>
+            </p>
+            <br>
+            <button class="btn picker-btn mt-3 mb-1 d-block m-auto" onClick="window.open('https://t.me/Dreamspell');">Базовая консультация
+
+            </button>
+            <button class="btn picker-btn mt-3 mb-4 d-block m-auto"  data-bs-dismiss="modal" >На главную</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="container">
+        <div class="picker-box card card-body pt-4">
+            <h4 class="text-center">Узнать свой архетип</h4>
+            <input type="date" class="form-control mt-5 picker" id="exampleFormControlInput1" placeholder="DD.MM.YYYY" />
+            <p class="text-center">введите дату рождения <span data-bs-toggle="modal" data-bs-target="#Modal1"><i class="fa-solid fa-triangle-exclamation"></i></span></p>
+            <button  onclick="call_calc()" class="btn picker-btn mt-3 mb-4" data-bs-toggle="modal" data-bs-target="#Modal2">Узнать</button>
+        </div>
+    </div>
+
