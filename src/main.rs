@@ -7,7 +7,7 @@ use axum::{
         header::{AUTHORIZATION, CONTENT_TYPE},
         Method, StatusCode,
     },
-    response::IntoResponse,
+    response::{Html, IntoResponse},
     routing::{get, post},
     Json, Router,
 };
@@ -52,9 +52,10 @@ async fn main() {
     });
 
     let dreamspell = Router::new()
-        .route("/", get(home))
-        .route("/tzolkin", post(tzolkin))
-        .route("/tzolkin_en", post(tzolkin_en))
+        .route("/", get(home).post(result))
+        .route("/en", get(home_en).post(result_en))
+        .route("/api/tzolkin", post(tzolkin))
+        .route("/api/tzolkin_en", post(tzolkin_en))
         .layer(
             CorsLayer::new()
                 .allow_headers([AUTHORIZATION, CONTENT_TYPE])
@@ -64,13 +65,87 @@ async fn main() {
         .with_state(state)
         .fallback(nothing);
 
-    println!("Welcome to dreamspell!");
+    println!("Welcome to Dreamspell!");
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8888").await.unwrap();
     axum::serve(listener, dreamspell).await.unwrap();
 }
 
 async fn home() -> impl IntoResponse {
-    (StatusCode::OK, "Welcome to Dreamspell!")
+    (
+        StatusCode::OK,
+        Html(
+            r#"
+        <!doctype html>
+		<html>
+        	<head><title>Dreamspell</title></head>
+			<body>
+			<form action="/" method="post">
+				<label for="name">Введите дату рождения:
+					<input type="date" name="date_of_birth">
+				</label><br>
+				<input type="submit" value="Узнать!">
+			</form>
+			</body>
+		</html>"#,
+        ),
+    )
+}
+
+async fn home_en() -> impl IntoResponse {
+    (
+        StatusCode::OK,
+        Html(
+            r#"
+        <!doctype html>
+		<html>
+        	<head><title>Dreamspell</title></head>
+			<body>
+			<form action="/en" method="post">
+				<label for="name">Enter your birth date:
+					<input type="date" name="date_of_birth">
+				</label><br>
+				<input type="submit" value="Go!">
+			</form>
+			</body>
+		</html>"#,
+        ),
+    )
+}
+
+async fn result(State(state): State<Arc<DreamspellState>>) -> impl IntoResponse {
+    (
+        StatusCode::OK,
+        Html(
+            r#"
+        <!doctype html>
+		<html>
+        	<head><title>Dreamspell</title></head>
+			<body>
+				Информация..
+				<br>
+				<a href="/">Назад</a>
+			</body>
+		</html>"#,
+        ),
+    )
+}
+
+async fn result_en(State(state): State<Arc<DreamspellState>>) -> impl IntoResponse {
+    (
+        StatusCode::OK,
+        Html(
+            r#"
+        <!doctype html>
+		<html>
+        	<head><title>Dreamspell</title></head>
+			<body>
+				The info..
+				<br>
+				<a href="/">Back</a>
+			</body>
+		</html>"#,
+        ),
+    )
 }
 
 async fn tzolkin(
