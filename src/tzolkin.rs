@@ -33,6 +33,13 @@ pub struct Tzolkin {
 
 impl Tzolkin {
     pub fn new(seals: &Seals, en: bool, parts: &[u32; 3]) -> Self {
+    	if parts.eq(&[0, 0, 0]) {
+    		let mut empty = Self::empty();
+    		empty.archetype_image = "no_image.jpg".to_string();
+    		empty.portrait_image = "no_image.jpg".to_string();
+    		empty.type_image = "no_image.jpg".to_string();
+    		return empty;
+    	}
         let kin = Self::kin(parts);
         let archetype = Self::archetype(kin);
         let main_seal = &seals.0.get((archetype.0 - 1) as usize);
