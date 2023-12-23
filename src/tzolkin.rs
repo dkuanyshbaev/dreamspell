@@ -18,17 +18,17 @@ struct Seal {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Seals(Vec<Seal>);
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Tzolkin {
-    archetype_name: String,
-    archetype_image: String,
-    archetype_description: String,
-    portrait_name: String,
-    portrait_image: String,
-    portrait_description: String,
-    type_name: String,
-    type_image: String,
-    type_description: String,
+    pub archetype_name: String,
+    pub archetype_image: String,
+    pub archetype_description: String,
+    pub portrait_name: String,
+    pub portrait_image: String,
+    pub portrait_description: String,
+    pub type_name: String,
+    pub type_image: String,
+    pub type_description: String,
 }
 
 impl Tzolkin {

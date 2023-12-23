@@ -1,15 +1,16 @@
 // ---------------------------------------
 // Dreamspell server
 // ---------------------------------------
+use askama::Template;
 use axum::{
     extract::State,
     http::{
         header::{AUTHORIZATION, CONTENT_TYPE},
         Method, StatusCode,
     },
-    response::{Html, IntoResponse},
+    response::{Html, IntoResponse, Response},
     routing::{get, post},
-    Json, Router,
+    Form, Json, Router,
 };
 use axum_auth::AuthBearer;
 use serde::Deserialize;
@@ -23,15 +24,54 @@ pub mod tzolkin;
 const SEALS: &str = "resources/seals.json";
 const SEALS_EN: &str = "resources/seals_en.json";
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct Input {
     birth_date: String,
 }
 
+#[derive(Debug)]
 struct DreamspellState {
     secret: String,
     seals: Seals,
     seals_en: Seals,
+}
+
+#[derive(Template)]
+#[template(path = "home.html")]
+struct HomeTemplate;
+
+#[derive(Template)]
+#[template(path = "home_en.html")]
+struct HomeEnTemplate;
+
+#[derive(Template)]
+#[template(path = "result.html")]
+struct ResultTemplate {
+    result: Tzolkin,
+}
+
+#[derive(Template)]
+#[template(path = "result_en.html")]
+struct ResultEnTemplate {
+    result: Tzolkin,
+}
+
+struct HtmlTemplate<T>(T);
+
+impl<T> IntoResponse for HtmlTemplate<T>
+where
+    T: Template,
+{
+    fn into_response(self) -> Response {
+        match self.0.render() {
+            Ok(html) => Html(html).into_response(),
+            Err(err) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Failed to render template. Error: {err}"),
+            )
+                .into_response(),
+        }
+    }
 }
 
 #[tokio::main]
@@ -71,81 +111,49 @@ async fn main() {
 }
 
 async fn home() -> impl IntoResponse {
-    (
-        StatusCode::OK,
-        Html(
-            r#"
-        <!doctype html>
-		<html>
-        	<head><title>Dreamspell</title></head>
-			<body>
-			<form action="/" method="post">
-				<label for="name">Введите дату рождения:
-					<input type="date" name="date_of_birth">
-				</label><br>
-				<input type="submit" value="Узнать!">
-			</form>
-			</body>
-		</html>"#,
-        ),
-    )
+    HtmlTemplate(HomeTemplate {})
 }
 
 async fn home_en() -> impl IntoResponse {
-    (
-        StatusCode::OK,
-        Html(
-            r#"
-        <!doctype html>
-		<html>
-        	<head><title>Dreamspell</title></head>
-			<body>
-			<form action="/en" method="post">
-				<label for="name">Enter your birth date:
-					<input type="date" name="date_of_birth">
-				</label><br>
-				<input type="submit" value="Go!">
-			</form>
-			</body>
-		</html>"#,
-        ),
-    )
+    HtmlTemplate(HomeEnTemplate {})
 }
 
-async fn result(State(state): State<Arc<DreamspellState>>) -> impl IntoResponse {
-    (
-        StatusCode::OK,
-        Html(
-            r#"
-        <!doctype html>
-		<html>
-        	<head><title>Dreamspell</title></head>
-			<body>
-				Информация..
-				<br>
-				<a href="/">Назад</a>
-			</body>
-		</html>"#,
-        ),
-    )
+async fn result(
+    State(state): State<Arc<DreamspellState>>,
+    Form(input): Form<Input>,
+) -> impl IntoResponse {
+    let result = Tzolkin::new(
+        &state.seals,
+        false,
+        &input
+            .birth_date
+            .split('-')
+            .map(|s| s.parse::<u32>().unwrap_or(0))
+            .collect::<Vec<u32>>()
+            .try_into()
+            .unwrap_or([0; 3]),
+    );
+
+    HtmlTemplate(ResultTemplate { result })
 }
 
-async fn result_en(State(state): State<Arc<DreamspellState>>) -> impl IntoResponse {
-    (
-        StatusCode::OK,
-        Html(
-            r#"
-        <!doctype html>
-		<html>
-        	<head><title>Dreamspell</title></head>
-			<body>
-				The info..
-				<br>
-				<a href="/">Back</a>
-			</body>
-		</html>"#,
-        ),
-    )
+async fn result_en(
+    State(state): State<Arc<DreamspellState>>,
+    Form(input): Form<Input>,
+) -> impl IntoResponse {
+    let result = Tzolkin::new(
+        &state.seals_en,
+        true,
+        &input
+            .birth_date
+            .split('-')
+            .map(|s| s.parse::<u32>().unwrap_or(0))
+            .collect::<Vec<u32>>()
+            .try_into()
+            .unwrap_or([0; 3]),
+    );
+
+    HtmlTemplate(ResultEnTemplate { result })
 }
 
 async fn tzolkin(

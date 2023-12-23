@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>{{ result.archetype_name }}</h4>
+<img src="static/img/seals/{{ result.archetype_image }}"> 
+<p>{{ result.archetype_description|safe }}</p>
+<h4>{{ result.portrait_name }}</h4>
+<img src="static/img/seals/{{ result.portrait_image }}"> 
+<p>{{ result.portrait_description|safe  }}</p>
+<h4>{{ result.type_name }}</h4>
+<img src="static/img/seals/{{ result.type_image }}"> 
+<p>{{ result.type_description|safe  }}</p>
+<a href="/en">Back</a>
+{% endblock %}

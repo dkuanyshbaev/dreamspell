@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/" method="post">
+	<label for="name">Введите дату рождения:
+		<input type="date" name="birth_date">
+	</label><br>
+	<input type="submit" value="Узнать!">
+</form>
+{% endblock %}
