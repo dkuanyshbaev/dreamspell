@@ -13,7 +13,7 @@ use axum::{
 };
 use axum_auth::AuthBearer;
 use serde::Deserialize;
-use std::{env, fs, net::SocketAddr, sync::Arc};
+use std::{env, fs, sync::Arc};
 use tower_http::cors::{Any, CorsLayer};
 use tzolkin::{Seals, Tzolkin};
 
@@ -64,13 +64,9 @@ async fn main() {
         .with_state(state)
         .fallback(nothing);
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8888));
-    println!("Listening on {}", addr);
-
-    axum::Server::bind(&addr)
-        .serve(dreamspell.into_make_service())
-        .await
-        .unwrap();
+    println!("Welcome to dreamspell!");
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8888").await.unwrap();
+    axum::serve(listener, dreamspell).await.unwrap();
 }
 
 async fn home() -> impl IntoResponse {
