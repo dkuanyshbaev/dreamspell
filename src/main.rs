@@ -87,6 +87,14 @@ struct ResultEnTemplate {
     result: Tzolkin,
 }
 
+#[derive(Template)]
+#[template(path = "site/oferta.html")]
+struct OfaTemplate;
+
+#[derive(Template)]
+#[template(path = "site/howto.html")]
+struct HowToTemplate;
+
 struct HtmlTemplate<T>(T);
 
 impl<T> IntoResponse for HtmlTemplate<T>
@@ -125,6 +133,8 @@ async fn main() {
     let dreamspell = Router::new()
         .route("/", get(home).post(result))
         .route("/en", get(home_en).post(result_en))
+        .route("/oferta", get(oferta))
+        .route("/howto", get(howto))
         .route("/api/tzolkin", post(tzolkin))
         .route("/api/tzolkin_en", post(tzolkin_en))
         .layer(
@@ -236,6 +246,14 @@ async fn tzolkin_en(
             )),
         )
     }
+}
+
+async fn oferta() -> impl IntoResponse {
+    HtmlTemplate(OfaTemplate {})
+}
+
+async fn howto() -> impl IntoResponse {
+    HtmlTemplate(HowToTemplate {})
 }
 
 async fn nothing() -> impl IntoResponse {
