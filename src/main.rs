@@ -92,8 +92,16 @@ struct ResultEnTemplate {
 struct OfaTemplate;
 
 #[derive(Template)]
+#[template(path = "site/oferta_en.html")]
+struct OfaEnTemplate;
+
+#[derive(Template)]
 #[template(path = "site/howto.html")]
 struct HowToTemplate;
+
+#[derive(Template)]
+#[template(path = "site/howto_en.html")]
+struct HowToEnTemplate;
 
 struct HtmlTemplate<T>(T);
 
@@ -134,7 +142,9 @@ async fn main() {
         .route("/", get(home).post(result))
         .route("/en", get(home_en).post(result_en))
         .route("/oferta", get(oferta))
+        .route("/oferta_en", get(oferta_en))
         .route("/howto", get(howto))
+        .route("/howto_en", get(howto_en))
         .route("/api/tzolkin", post(tzolkin))
         .route("/api/tzolkin_en", post(tzolkin_en))
         .layer(
@@ -252,8 +262,16 @@ async fn oferta() -> impl IntoResponse {
     HtmlTemplate(OfaTemplate {})
 }
 
+async fn oferta_en() -> impl IntoResponse {
+    HtmlTemplate(OfaEnTemplate {})
+}
+
 async fn howto() -> impl IntoResponse {
     HtmlTemplate(HowToTemplate {})
+}
+
+async fn howto_en() -> impl IntoResponse {
+    HtmlTemplate(HowToEnTemplate {})
 }
 
 async fn nothing() -> impl IntoResponse {
