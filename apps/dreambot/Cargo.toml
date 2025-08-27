@@ -1,7 +1,7 @@
 [package]
 name = "dreambot"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 tzolkin = { path = "../../lib/tzolkin" }
@@ -12,4 +12,4 @@ pretty_env_logger = { workspace = true }
 chrono = { workspace = true }
 serde = { workspace = true }
 sqlx = { workspace = true }
-dotenvy = "0.15"
+dotenvy = { workspace = true }

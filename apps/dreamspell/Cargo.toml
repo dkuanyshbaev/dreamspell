@@ -1,21 +1,17 @@
 [package]
-name = "dreamspell-web"
-version = "0.1.0"
-edition = "2021"
-
-[[bin]]
 name = "dreamspell"
-path = "src/main.rs"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 tzolkin = { path = "../../lib/tzolkin" }
-askama = "0.14"
-axum = "0.8"
+askama = { workspace = true }
+axum = { workspace = true }
 chrono = { workspace = true }
-dotenvy = "0.15"
+dotenvy = { workspace = true }
 serde = { workspace = true }
 sqlx = { workspace = true }
 tokio = { workspace = true }
-tower-http = { version = "0.6", features = ["fs"] }
+tower-http = { workspace = true, features = ["fs"] }
 tracing = { workspace = true }
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-subscriber = { workspace = true }
