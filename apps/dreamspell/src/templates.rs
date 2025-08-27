@@ -10,39 +10,39 @@ use axum::{
 use tzolkin::Tzolkin;
 
 #[derive(Template)]
-#[template(path = "site/home.html")]
+#[template(path = "home.html")]
 pub struct HomeTemplate;
 
 #[derive(Template)]
-#[template(path = "site/home_en.html")]
+#[template(path = "home_en.html")]
 pub struct HomeEnTemplate;
 
 #[derive(Template)]
-#[template(path = "site/result.html")]
+#[template(path = "result.html")]
 pub struct ResultTemplate {
     pub result: Tzolkin,
 }
 
 #[derive(Template)]
-#[template(path = "site/result_en.html")]
+#[template(path = "result_en.html")]
 pub struct ResultEnTemplate {
     pub result: Tzolkin,
 }
 
 #[derive(Template)]
-#[template(path = "site/oferta.html")]
+#[template(path = "oferta.html")]
 pub struct OfertaTemplate;
 
 #[derive(Template)]
-#[template(path = "site/oferta_en.html")]
+#[template(path = "oferta_en.html")]
 pub struct OfertaEnTemplate;
 
 #[derive(Template)]
-#[template(path = "site/howto.html")]
+#[template(path = "howto.html")]
 pub struct HowToTemplate;
 
 #[derive(Template)]
-#[template(path = "site/howto_en.html")]
+#[template(path = "howto_en.html")]
 pub struct HowToEnTemplate;
 
 pub struct HtmlTemplate<T>(pub T);
