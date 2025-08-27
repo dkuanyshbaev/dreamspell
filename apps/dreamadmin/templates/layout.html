@@ -4,20 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dreamspell Admin{% endblock %}</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/admin.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/admin">Dreamspell Admin</a>
-        </div>
+    <nav>
+        <h1><a href="/admin">Dreamspell Admin</a></h1>
     </nav>
     
-    <main class="container-fluid mt-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
-    
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

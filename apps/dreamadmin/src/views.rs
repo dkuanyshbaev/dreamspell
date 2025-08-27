@@ -1,39 +1,71 @@
-use axum::response::IntoResponse;
+use askama::Template;
+use axum::{
+    http::StatusCode,
+    response::{Html, IntoResponse, Redirect},
+    Form,
+};
 
-use crate::auth::Credentials;
-use crate::*;
+use crate::auth::{AuthSession, Credentials};
 
-pub async fn admin() -> Html<&'static str> {
-    Html("<h1>Admin</h1>")
+#[derive(Template)]
+#[template(path = "admin.html")]
+pub struct AdminTemplate;
+
+pub async fn admin() -> AdminTemplate {
+    AdminTemplate
 }
 
-pub async fn login_get() -> Html<&'static str> {
-    Html("<h1>Login</h1>")
+#[derive(Template)]
+#[template(path = "login.html")]
+pub struct LoginTemplate {
+    pub error: Option<String>,
 }
 
-pub async fn login_post() -> Html<&'static str> {
-    Html("")
+pub async fn login_get() -> LoginTemplate {
+    LoginTemplate { error: None }
 }
 
-pub async fn login(
-    mut auth_session: crate::auth::AuthSession,
-    Form(creds): Form<Credentials>,
+pub async fn login_post(
+    mut auth_session: AuthSession,
+    Form(credentials): Form<Credentials>,
 ) -> impl IntoResponse {
-    let user = match auth_session.authenticate(creds.clone()).await {
-        Ok(Some(user)) => user,
-        Ok(None) => return StatusCode::UNAUTHORIZED.into_response(),
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-    };
-
-    if auth_session.login(&user).await.is_err() {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    match auth_session.authenticate(credentials).await {
+        Ok(Some(user)) => {
+            if auth_session.login(&user).await.is_ok() {
+                Redirect::to("/admin").into_response()
+            } else {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Login failed").into_response()
+            }
+        }
+        Ok(None) => {
+            let template = LoginTemplate {
+                error: Some("Invalid username or password".to_string()),
+            };
+            template.into_response()
+        }
+        Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Authentication error").into_response(),
     }
-
-    Redirect::to("/admin").into_response()
 }
 
-// use crate::error::DreamspellError;
+
 pub async fn nothing() -> impl IntoResponse {
-    // DreamspellError::NotFound
     (StatusCode::NOT_FOUND, "Not found")
+}
+
+impl IntoResponse for LoginTemplate {
+    fn into_response(self) -> axum::response::Response {
+        match self.render() {
+            Ok(html) => Html(html).into_response(),
+            Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Template error").into_response(),
+        }
+    }
+}
+
+impl IntoResponse for AdminTemplate {
+    fn into_response(self) -> axum::response::Response {
+        match self.render() {
+            Ok(html) => Html(html).into_response(),
+            Err(_) => (StatusCode::INTERNAL_SERVER_ERROR, "Template error").into_response(),
+        }
+    }
 }

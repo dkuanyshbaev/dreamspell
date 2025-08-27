@@ -13,3 +13,5 @@ tower-sessions-sqlx-store = { workspace = true }
 time = { workspace = true }
 sqlx = { workspace = true, features = ["time"] }
 dotenvy = { workspace = true }
+askama = { workspace = true }
+serde = { workspace = true }

@@ -1,8 +1,5 @@
 use axum::{
-    http::StatusCode,
-    response::{Html, Redirect},
     routing::{get, Router},
-    Form,
 };
 use axum_login::{
     login_required,
@@ -10,7 +7,7 @@ use axum_login::{
     AuthManagerLayerBuilder,
 };
 use sqlx::sqlite::SqlitePool;
-use std::{collections::HashMap, env};
+use std::env;
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
 // use tower_http::{limit::RequestBodyLimitLayer, services::ServeDir};
@@ -25,6 +22,7 @@ mod views;
 async fn main() -> Result<(), sqlx::Error> {
     dotenvy::dotenv().ok();
     
+    let secret = env::var("SECRET").expect("SECRET must be set");
     let db_location = env::var("DB_LOCATION").expect("DB_LOCATION must be set");
     let db_pool = SqlitePool::connect(&db_location).await?;
 
@@ -49,17 +47,14 @@ async fn main() -> Result<(), sqlx::Error> {
     ////////////////////////////////////////////////////////
 
     // Auth service.
-    let backend = Backend::default();
+    let backend = Backend::new(secret);
     let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
     let app = Router::new()
         .route("/admin", get(views::admin))
         .route_layer(login_required!(Backend, login_url = "/"))
-        .route("/", get(views::login_get))
-        // .route("/login", get(views::login_get).post(views::login_post()))
-        // .nest_service("/static", ServeDir::new("static"))
+        .route("/", get(views::login_get).post(views::login_post))
         .fallback(views::nothing)
-        // .with_state(state)
         .layer(auth_layer);
 
     println!("Starting on 4444");

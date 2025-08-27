@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Login - Dreamspell Admin{% endblock %}
+
+{% block content %}
+<h2>Admin Login</h2>
+
+{% match error %}
+    {% when Some with (msg) %}
+        <p style="color: red;">{{ msg }}</p>
+    {% when None %}
+{% endmatch %}
+
+<form method="post" action="/">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="admin" readonly required>
+    </div>
+    
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,9 +1,9 @@
-use crate::HashMap;
 use axum_login::{AuthUser, AuthnBackend, UserId};
+use serde::{Deserialize, Serialize};
 
 pub type AuthSession = axum_login::AuthSession<Backend>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     id: i64,
     pw_hash: Vec<u8>,
@@ -21,14 +21,21 @@ impl AuthUser for User {
     }
 }
 
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct Backend {
-    users: HashMap<i64, User>,
+    secret: String,
 }
 
-#[derive(Clone)]
+impl Backend {
+    pub fn new(secret: String) -> Self {
+        Self { secret }
+    }
+}
+
+#[derive(Clone, Deserialize)]
 pub struct Credentials {
-    user_id: i64,
+    pub username: String,
+    pub password: String,
 }
 
 impl AuthnBackend for Backend {
@@ -38,12 +45,28 @@ impl AuthnBackend for Backend {
 
     async fn authenticate(
         &self,
-        Credentials { user_id }: Self::Credentials,
+        credentials: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        Ok(self.users.get(&user_id).cloned())
+        if credentials.username == "admin" && credentials.password == self.secret {
+            let user = User {
+                id: 1,
+                pw_hash: self.secret.as_bytes().to_vec(),
+            };
+            Ok(Some(user))
+        } else {
+            Ok(None)
+        }
     }
 
     async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {
-        Ok(self.users.get(user_id).cloned())
+        if *user_id == 1 {
+            let user = User {
+                id: 1,
+                pw_hash: self.secret.as_bytes().to_vec(),
+            };
+            Ok(Some(user))
+        } else {
+            Ok(None)
+        }
     }
 }
