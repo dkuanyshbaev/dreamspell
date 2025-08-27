@@ -12,8 +12,8 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use crate::templates::{
-    HomeEnTemplate, HomeTemplate, HowToEnTemplate, HowToTemplate, HtmlTemplate, OfaEnTemplate,
-    OfaTemplate, ResultEnTemplate, ResultTemplate,
+    HomeEnTemplate, HomeTemplate, HowToEnTemplate, HowToTemplate, HtmlTemplate, OfertaEnTemplate,
+    OfertaTemplate, ResultEnTemplate, ResultTemplate,
 };
 use tzolkin::{Language, Tzolkin};
 use crate::DreamState;
@@ -99,11 +99,11 @@ pub async fn result_en(
 }
 
 pub async fn oferta() -> impl IntoResponse {
-    HtmlTemplate(OfaTemplate {})
+    HtmlTemplate(OfertaTemplate {})
 }
 
 pub async fn oferta_en() -> impl IntoResponse {
-    HtmlTemplate(OfaEnTemplate {})
+    HtmlTemplate(OfertaEnTemplate {})
 }
 
 pub async fn howto() -> impl IntoResponse {

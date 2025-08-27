@@ -31,11 +31,11 @@ pub struct ResultEnTemplate {
 
 #[derive(Template)]
 #[template(path = "site/oferta.html")]
-pub struct OfaTemplate;
+pub struct OfertaTemplate;
 
 #[derive(Template)]
 #[template(path = "site/oferta_en.html")]
-pub struct OfaEnTemplate;
+pub struct OfertaEnTemplate;
 
 #[derive(Template)]
 #[template(path = "site/howto.html")]
@@ -53,11 +53,14 @@ where
     fn into_response(self) -> Response {
         match self.0.render() {
             Ok(html) => Html(html).into_response(),
-            Err(err) => (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                format!("Failed to render template. Error: {err}"),
-            )
-                .into_response(),
+            Err(err) => {
+                tracing::error!(error = %err, "Failed to render template");
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Internal server error",
+                )
+                    .into_response()
+            }
         }
     }
 }
