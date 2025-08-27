@@ -6,10 +6,9 @@ use crate::tables::{ARCHETYPE_TABLE, MONTH_TABLE, YEAR_TABLE};
 use serde::{Deserialize, Serialize};
 use sqlx::SqlitePool;
 
-// Constants for Tzolkin calendar calculations
-const TZOLKIN_CYCLE_DAYS: u32 = 260;  // Total days in Tzolkin sacred calendar cycle
-const YEAR_CYCLE_LENGTH: f32 = 52.0;  // Years in complete calendar cycle
-const KIN_ARRAY_OFFSET: u32 = 1;      // Kin numbers start from 1, arrays from 0
+const TZOLKIN_CYCLE_DAYS: u32 = 260; // Total days in Tzolkin sacred calendar cycle
+const YEAR_CYCLE_LENGTH: f32 = 52.0; // Years in complete calendar cycle
+const KIN_ARRAY_OFFSET: u32 = 1; // Kin numbers start from 1, arrays from 0
 
 #[derive(Debug, Clone, Copy)]
 pub enum Language {
@@ -31,11 +30,7 @@ pub struct Tzolkin {
 }
 
 impl Tzolkin {
-    pub async fn new(
-        db_pool: &SqlitePool,
-        lang: Language,
-        parts: &[u32; 3]
-    ) -> Self {
+    pub async fn new(db_pool: &SqlitePool, lang: Language, parts: &[u32; 3]) -> Self {
         // Handle empty date
         if parts.eq(&[0, 0, 0]) {
             return Self::empty_with_images();
@@ -44,7 +39,7 @@ impl Tzolkin {
         // Calculate kin using shared logic
         let kin = kin_from_parts(parts);
         let (main_id, type_id) = archetype(kin);
-        
+
         // Parallel database queries
         let (main_seal, type_seal) = match tokio::try_join!(
             db::get_seal(db_pool, main_id),
@@ -72,7 +67,7 @@ impl Tzolkin {
             type_description: type_seal.type_description.clone(),
         }
     }
-    
+
     pub fn empty() -> Self {
         Self::default()
     }
@@ -110,7 +105,6 @@ pub fn archetype(kin: u32) -> (u32, u32) {
     ARCHETYPE_TABLE[(kin - KIN_ARRAY_OFFSET) as usize]
 }
 
-// Separate function for building compound names
 fn build_compound_name(main_seal: &db::Seal, type_seal: &db::Seal, lang: Language) -> String {
     if main_seal.name == type_seal.name {
         let prefix = match lang {

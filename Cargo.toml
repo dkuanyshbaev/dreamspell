@@ -21,7 +21,6 @@ sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "sqlite"] }
 chrono = { version = "0.4", features = ["serde"] }
 tracing = "0.1"
 dotenvy = "0.15"
-thiserror = "1.0"
 
 # Web dependencies
 axum = "0.8"
