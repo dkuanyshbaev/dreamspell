@@ -8,7 +8,7 @@ name = "dreamspell"
 path = "src/main.rs"
 
 [dependencies]
-tzolkin = { path = "../tzolkin" }
+tzolkin = { path = "../../lib/tzolkin" }
 askama = "0.14"
 axum = "0.8"
 chrono = { workspace = true }

@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tzolkin = { path = "../tzolkin" }
+tzolkin = { path = "../../lib/tzolkin" }
 axum = "0.8"
 axum-login = { workspace = true }
 tokio = { workspace = true, features = ["full"] }

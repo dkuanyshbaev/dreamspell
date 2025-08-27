@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tzolkin = { path = "../tzolkin" }
+tzolkin = { path = "../../lib/tzolkin" }
 tokio = { workspace = true, features = ["macros"] }
 teloxide = { workspace = true }
 log = { workspace = true }
