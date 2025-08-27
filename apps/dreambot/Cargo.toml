@@ -1,0 +1,15 @@
+[package]
+name = "dreambot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tzolkin = { path = "../tzolkin" }
+tokio = { workspace = true, features = ["macros"] }
+teloxide = { workspace = true }
+log = { workspace = true }
+pretty_env_logger = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+sqlx = { workspace = true }
+dotenvy = "0.15"

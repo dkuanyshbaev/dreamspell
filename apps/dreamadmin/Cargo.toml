@@ -1,0 +1,15 @@
+[package]
+name = "dreamadmin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tzolkin = { path = "../tzolkin" }
+axum = "0.8"
+axum-login = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+tower-http = { version = "0.6", features = ["fs", "limit"] }
+tower-sessions-sqlx-store = { workspace = true }
+time = { workspace = true }
+sqlx = { workspace = true, features = ["time"] }
+dotenvy = "0.15"
