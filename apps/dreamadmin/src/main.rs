@@ -13,7 +13,6 @@ use axum_login::{
 };
 use sqlx::sqlite::SqlitePoolOptions;
 use time::Duration;
-use tokio::{signal, task::AbortHandle};
 use tower_sessions_sqlx_store::SqliteStore;
 use tracing_subscriber;
 
@@ -82,7 +81,7 @@ async fn main() -> Result<(), sqlx::Error> {
             e
         })?;
     axum::serve(listener, app.into_make_service())
-        .with_graceful_shutdown(shutdown_signal(deletion_task.abort_handle()))
+        .with_graceful_shutdown(shutdown_signal())
         .await
         .map_err(|e| {
             tracing::error!(error = %e, "Server failed to start");
@@ -90,21 +89,22 @@ async fn main() -> Result<(), sqlx::Error> {
         })?;
     tracing::info!("Server shutdown completed gracefully");
 
-    deletion_task.await.unwrap().unwrap();
+    deletion_task.abort();
+    let _ = deletion_task.await;
 
     Ok(())
 }
 
-async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
+async fn shutdown_signal() {
     let ctrl_c = async {
-        signal::ctrl_c()
+        tokio::signal::ctrl_c()
             .await
             .expect("failed to install Ctrl+C handler");
     };
 
     #[cfg(unix)]
     let terminate = async {
-        signal::unix::signal(signal::unix::SignalKind::terminate())
+        tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
             .expect("failed to install signal handler")
             .recv()
             .await;
@@ -114,13 +114,11 @@ async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
     let terminate = std::future::pending::<()>();
 
     tokio::select! {
-        _ = ctrl_c => { 
+        _ = ctrl_c => {
             tracing::info!("Received Ctrl+C, initiating graceful shutdown");
-            deletion_task_abort_handle.abort() 
         },
-        _ = terminate => { 
+        _ = terminate => {
             tracing::info!("Received SIGTERM, initiating graceful shutdown");
-            deletion_task_abort_handle.abort() 
         },
     }
 }
