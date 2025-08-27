@@ -37,7 +37,6 @@ impl Backend {
 
 #[derive(Clone, Deserialize)]
 pub struct Credentials {
-    pub username: String,
     pub password: String,
 }
 
@@ -50,7 +49,7 @@ impl AuthnBackend for Backend {
         &self,
         credentials: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        if credentials.username == "admin" && credentials.password == self.secret {
+        if credentials.password == self.secret {
             let user = User {
                 id: 1,
                 pw_hash: self.secret.as_bytes().to_vec(),
