@@ -1,3 +1,6 @@
+//////////////////////////////////////////
+// Dreamadmin authentication
+//////////////////////////////////////////
 use axum_login::{AuthUser, AuthnBackend, UserId};
 use serde::{Deserialize, Serialize};
 

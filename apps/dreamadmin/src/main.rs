@@ -1,3 +1,8 @@
+//////////////////////////////////////////
+// Dreamadmin server
+//////////////////////////////////////////
+use std::env;
+
 use axum::{
     routing::{get, Router},
 };
@@ -6,25 +11,41 @@ use axum_login::{
     tower_sessions::{session_store::ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-use sqlx::sqlite::SqlitePool;
-use std::env;
+use sqlx::sqlite::SqlitePoolOptions;
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
-// use tower_http::{limit::RequestBodyLimitLayer, services::ServeDir};
 use tower_sessions_sqlx_store::SqliteStore;
+use tracing_subscriber;
 
-use crate::auth::Backend;
+use views::{admin, login_get, login_post, nothing};
 
-mod auth;
-mod views;
+pub mod auth;
+pub mod templates;
+pub mod views;
+
+const MAX_DB_CONNECTIONS: u32 = 5;
+const DEFAULT_PORT: u16 = 4444;
+const DEFAULT_HOST: &str = "0.0.0.0";
+
+pub struct AdminState {
+    pub backend: auth::Backend,
+}
 
 #[tokio::main]
 async fn main() -> Result<(), sqlx::Error> {
     dotenvy::dotenv().ok();
+    tracing_subscriber::fmt()
+        .with_env_filter("dreamadmin=info,tower_http=info")
+        .init();
+    tracing::info!("Initializing Dreamadmin server");
     
     let secret = env::var("SECRET").expect("SECRET must be set");
     let db_location = env::var("DB_LOCATION").expect("DB_LOCATION must be set");
-    let db_pool = SqlitePool::connect(&db_location).await?;
+    tracing::info!(db_location = %db_location, "Connecting to database");
+    let db_pool = SqlitePoolOptions::new()
+        .max_connections(MAX_DB_CONNECTIONS)
+        .connect(&db_location)
+        .await?;
 
     // Session layer.
     let session_store = SqliteStore::new(db_pool);
@@ -37,33 +58,36 @@ async fn main() -> Result<(), sqlx::Error> {
     );
 
     let session_layer = SessionManagerLayer::new(session_store)
-        // default true - https only
-        // .with_secure(false)
         .with_expiry(Expiry::OnInactivity(Duration::weeks(1)));
 
-    // let session_secret = rand::thread_rng().gen::<[u8; 64]>();
-    // let session_store = SessionStore::new();
-    // let session_layer = SessionLayer::new(session_store, &session_secret);
-    ////////////////////////////////////////////////////////
-
     // Auth service.
-    let backend = Backend::new(secret);
+    let backend = auth::Backend::new(secret);
     let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
     let app = Router::new()
-        .route("/admin", get(views::admin))
-        .route_layer(login_required!(Backend, login_url = "/"))
-        .route("/", get(views::login_get).post(views::login_post))
-        .fallback(views::nothing)
+        .route("/admin", get(admin))
+        .route_layer(login_required!(auth::Backend, login_url = "/"))
+        .route("/", get(login_get).post(login_post))
+        .fallback(nothing)
         .layer(auth_layer);
 
-    println!("Starting on 4444");
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:4444").await.unwrap();
+    let bind_address = format!("{}:{}", DEFAULT_HOST, DEFAULT_PORT);
+    tracing::info!(address = %bind_address, "Dreamadmin server started successfully");
+    let listener = tokio::net::TcpListener::bind(&bind_address)
+        .await
+        .map_err(|e| {
+            tracing::error!(error = %e, address = %bind_address, "Failed to bind to address");
+            e
+        })?;
     axum::serve(listener, app.into_make_service())
         .with_graceful_shutdown(shutdown_signal(deletion_task.abort_handle()))
-        .await?;
+        .await
+        .map_err(|e| {
+            tracing::error!(error = %e, "Server failed to start");
+            e
+        })?;
+    tracing::info!("Server shutdown completed gracefully");
 
-    // deletion_task.await??;
     deletion_task.await.unwrap().unwrap();
 
     Ok(())
@@ -88,7 +112,13 @@ async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
     let terminate = std::future::pending::<()>();
 
     tokio::select! {
-        _ = ctrl_c => { deletion_task_abort_handle.abort() },
-        _ = terminate => { deletion_task_abort_handle.abort() },
+        _ = ctrl_c => { 
+            tracing::info!("Received Ctrl+C, initiating graceful shutdown");
+            deletion_task_abort_handle.abort() 
+        },
+        _ = terminate => { 
+            tracing::info!("Received SIGTERM, initiating graceful shutdown");
+            deletion_task_abort_handle.abort() 
+        },
     }
 }

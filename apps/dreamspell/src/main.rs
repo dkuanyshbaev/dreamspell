@@ -17,7 +17,6 @@ const DEFAULT_PORT: u16 = 8888;
 const DEFAULT_HOST: &str = "0.0.0.0";
 
 pub struct DreamState {
-    pub secret: String,
     pub db_pool: SqlitePool,
 }
 
@@ -29,13 +28,12 @@ async fn main() -> Result<(), sqlx::Error> {
         .init();
     tracing::info!("Initializing Dreamspell server");
 
-    let secret = env::var("SECRET").expect("SECRET must be set");
     let db_location = env::var("DB_LOCATION").expect("DB_LOCATION must be set");
     let db_pool = SqlitePoolOptions::new()
         .max_connections(MAX_DB_CONNECTIONS)
         .connect(&db_location)
         .await?;
-    let state = Arc::new(DreamState { secret, db_pool });
+    let state = Arc::new(DreamState { db_pool });
 
     let app = Router::new()
         .route("/", get(home).post(result))

@@ -15,3 +15,5 @@ sqlx = { workspace = true, features = ["time"] }
 dotenvy = { workspace = true }
 askama = { workspace = true }
 serde = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
