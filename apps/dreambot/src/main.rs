@@ -9,7 +9,7 @@ use teloxide::{
     prelude::*,
     types::InputFile,
 };
-use tzolkin::{kin, archetype};
+use tzolkin::{kin, archetype, get_seal};
 
 mod db;
 
@@ -18,7 +18,7 @@ type DreamStorage = std::sync::Arc<ErasedStorage<State>>;
 type HandlerResult = Result<(), Box<dyn std::error::Error + Send + Sync>>;
 
 const DATE_FORMAT: &str = "%d.%m.%Y";
-const MAX_DB_CONNECTIONS: u32 = 10;
+const MAX_DB_CONNECTIONS: u32 = 5;
 
 #[derive(Clone, Default, serde::Serialize, serde::Deserialize)]
 pub enum State {
@@ -88,8 +88,8 @@ async fn calc(
             
             let kin = kin(date.day(), date.month(), date.year());
             let archetype = archetype(kin);
-            let main_seal = db::get_seal(&db_pool, archetype.0).await?;
-            let type_seal = db::get_seal(&db_pool, archetype.1).await?;
+            let main_seal = get_seal(&db_pool, archetype.0).await?;
+            let type_seal = get_seal(&db_pool, archetype.1).await?;
 
             let name = if main_seal.name.eq(&type_seal.name) {
                 ["Классический".to_owned(), type_seal.name.to_owned()].join(" ")
