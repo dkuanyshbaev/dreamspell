@@ -4,12 +4,20 @@
 use sqlx::SqlitePool;
 
 pub async fn save_birthday(db_pool: &SqlitePool, id: i64, birthday: String) {
-    let _ = sqlx::query(
+    if let Err(e) = sqlx::query(
         "INSERT INTO users (id, birthday) VALUES ($1, $2)
         ON CONFLICT (id) DO UPDATE SET birthday=excluded.birthday",
     )
     .bind(id)
-    .bind(birthday)
+    .bind(&birthday)
     .execute(db_pool)
-    .await;
+    .await
+    {
+        log::error!(
+            "Failed to save birthday for user {}: {} (birthday: {})", 
+            id, e, birthday
+        );
+    } else {
+        log::debug!("Successfully saved birthday for user {}: {}", id, birthday);
+    }
 }
