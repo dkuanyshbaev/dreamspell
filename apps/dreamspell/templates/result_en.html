@@ -1,25 +1,58 @@
 {% extends "layout.html" %}
 {% block content %}
 <body class="d-flex text-center text-bg-dark">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column" style="max-width: 50em;">
+
         <main class="px-3">
-            <h4>{{ result.archetype_name }}</h4>
-            <p class="lead"><img src="static/img/seals/{{ result.archetype_image }}"></p>
-            <p class="lead">{{ result.archetype_description|safe }}</p>
+            <h1 class="display-4 fw-bold mb-5">Your Dreamspell Calculation</h1>
+            
+            <!-- Archetype Section -->
+            <div class="result-section p-4 rounded-3 mb-5" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h2 class="h3 fw-bold mb-4">{{ result.archetype_name }}</h2>
+                <div class="seal-image mb-4">
+                    <img src="static/img/seals/{{ result.archetype_image }}" class="rounded shadow" style="max-width: 200px; width: 100%;">
+                </div>
+                <div class="description text-start">
+                    <p class="lead">{{ result.archetype_description|safe }}</p>
+                </div>
+            </div>
 
-            <h4>{{ result.portrait_name }}</h4>
-            <p class="lead"><img src="static/img/seals/{{ result.portrait_image }}"></p>
-            <p class="lead">{{ result.portrait_description|safe }}</p>
+            <!-- Portrait Section -->
+            <div class="result-section p-4 rounded-3 mb-5" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h2 class="h3 fw-bold mb-4">{{ result.portrait_name }}</h2>
+                <div class="seal-image mb-4">
+                    <img src="static/img/seals/{{ result.portrait_image }}" class="rounded shadow" style="max-width: 200px; width: 100%;">
+                </div>
+                <div class="description text-start">
+                    <p class="lead">{{ result.portrait_description|safe }}</p>
+                </div>
+            </div>
 
-            <h4>{{ result.type_name }}</h4>
-            <p class="lead"><img src="static/img/seals/{{ result.type_image }}"></p>
-            <p class="lead">{{ result.type_description|safe }}</p>
+            <!-- Type Section -->
+            <div class="result-section p-4 rounded-3 mb-5" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h2 class="h3 fw-bold mb-4">{{ result.type_name }}</h2>
+                <div class="seal-image mb-4">
+                    <img src="static/img/seals/{{ result.type_image }}" class="rounded shadow" style="max-width: 200px; width: 100%;">
+                </div>
+                <div class="description text-start">
+                    <p class="lead">{{ result.type_description|safe }}</p>
+                </div>
+            </div>
+
+            <!-- Call to Action Section -->
+            <div class="cta-section p-4 rounded-3 mb-4" style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.2);">
+                <h3 class="h5 mb-3">Want to learn more?</h3>
+                <p class="mb-4">Get a complete personal reading with detailed analysis of your purpose and destiny.</p>
+                <a href="https://t.me/swami_sattyanand" target="_blank" class="btn btn-primary btn-lg px-4 py-2 fw-bold me-3 mb-2">
+                    Request consultation
+                </a>
+            </div>
         </main>
 
-        <footer class="mt-auto text-white-50">
-            {# <p><a href="/en" class="text-white">Back</a></p> #}
-            <p><a href="https://t.me/swami_sattyanand" target="_blank" class="btn btn-lg btn-light fw-bold border-white bg-white">Request a reading</a></p>
-            <p><a href="/en" class="btn btn-lg btn-light fw-bold border-white bg-white">Home</a></p>
+        <footer class="mt-auto text-white-50 pt-3">
+            <p class="small">
+                <a href="/en" class="text-white-50">← Back to home</a>
+            </p>
         </footer>
     </div>
 </body>
