@@ -1,8 +1,21 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ seal.name }} - Dreamadmin{% endblock %}
+{% block title %}Dreamadmin{% endblock %}
 
 {% block content %}
+<style>
+    .btn-primary {
+        background-color: #0070f3;
+        color: white;
+        border: none;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+</style>
 <h2>Печать №{{ seal.id }} - {{ seal.name }}</h2>
 
 <form method="post" action="/admin/seal/{{ seal.id }}">
@@ -54,8 +67,8 @@
     <textarea id="type_description_short" name="type_description_short"></textarea>
 
     <p>
-        <button type="submit">Сохранить</button>
-        <button type="button" onclick="location.href='/admin'">Отмена</button>
+        <button type="submit" class="btn-primary">Сохранить</button>
+        <button type="button" class="btn-secondary" onclick="location.href='/admin'">Отмена</button>
     </p>
 </form>
 {% endblock %}

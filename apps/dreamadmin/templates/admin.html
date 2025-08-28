@@ -1,14 +1,11 @@
 {% extends "layout.html" %}
 
-{% block title %}Панель управления - Dreamadmin{% endblock %}
+{% block title %}Dreamadmin{% endblock %}
 
 {% block content %}
-<section>
-    <header>
-        <h2>Печати</h2>
-    </header>
+<h2>Печати</h2>
 
-    <table>
+<table>
         <thead>
             <tr>
                 <th style="width: 80px;">№</th>
@@ -24,6 +21,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-</section>
 {% endblock %}
