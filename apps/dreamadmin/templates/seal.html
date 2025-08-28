@@ -27,44 +27,53 @@
     <input type="text" id="name" name="name" value="{{ seal.name }}" required>
     
     <label for="name_en">Английский:</label>
-    <input type="text" id="name_en" name="name_en" value="">
+    <input type="text" id="name_en" name="name_en" value="{{ seal.name_en }}">
 
     <h3>Архетип</h3>
     <label for="archetype">Название (Русский):</label>
     <input type="text" id="archetype" name="archetype" value="{{ seal.archetype }}">
     
     <label for="archetype_en">Название (Английский):</label>
-    <input type="text" id="archetype_en" name="archetype_en" value="">
+    <input type="text" id="archetype_en" name="archetype_en" value="{{ seal.archetype_en }}">
 
     <h4>Описание архетипа</h4>
     <label for="archetype_description">Полное (Русский):</label>
     <textarea id="archetype_description" name="archetype_description">{{ seal.archetype_description }}</textarea>
     
     <label for="archetype_description_en">Полное (Английский):</label>
-    <textarea id="archetype_description_en" name="archetype_description_en"></textarea>
+    <textarea id="archetype_description_en" name="archetype_description_en">{{ seal.archetype_description_en|safe }}</textarea>
     
-    <label for="archetype_description_short">Краткое:</label>
-    <textarea id="archetype_description_short" name="archetype_description_short"></textarea>
+    <label for="archetype_description_short">Краткое (Русский):</label>
+    <textarea id="archetype_description_short" name="archetype_description_short">{{ seal.archetype_description_short|safe }}</textarea>
+    
+    <label for="archetype_description_short_en">Краткое (Английский):</label>
+    <textarea id="archetype_description_short_en" name="archetype_description_short_en">{{ seal.archetype_description_short_en|safe }}</textarea>
 
     <h3>Описание портрета</h3>
     <label for="portrait_description">Полное (Русский):</label>
     <textarea id="portrait_description" name="portrait_description">{{ seal.portrait_description }}</textarea>
     
     <label for="portrait_description_en">Полное (Английский):</label>
-    <textarea id="portrait_description_en" name="portrait_description_en"></textarea>
+    <textarea id="portrait_description_en" name="portrait_description_en">{{ seal.portrait_description_en|safe }}</textarea>
     
-    <label for="portrait_description_short">Краткое:</label>
-    <textarea id="portrait_description_short" name="portrait_description_short"></textarea>
+    <label for="portrait_description_short">Краткое (Русский):</label>
+    <textarea id="portrait_description_short" name="portrait_description_short">{{ seal.portrait_description_short|safe }}</textarea>
+    
+    <label for="portrait_description_short_en">Краткое (Английский):</label>
+    <textarea id="portrait_description_short_en" name="portrait_description_short_en">{{ seal.portrait_description_short_en|safe }}</textarea>
 
     <h3>Описание типа</h3>
     <label for="type_description">Полное (Русский):</label>
     <textarea id="type_description" name="type_description">{{ seal.type_description }}</textarea>
     
     <label for="type_description_en">Полное (Английский):</label>
-    <textarea id="type_description_en" name="type_description_en"></textarea>
+    <textarea id="type_description_en" name="type_description_en">{{ seal.type_description_en|safe }}</textarea>
     
-    <label for="type_description_short">Краткое:</label>
-    <textarea id="type_description_short" name="type_description_short"></textarea>
+    <label for="type_description_short">Краткое (Русский):</label>
+    <textarea id="type_description_short" name="type_description_short">{{ seal.type_description_short|safe }}</textarea>
+    
+    <label for="type_description_short_en">Краткое (Английский):</label>
+    <textarea id="type_description_short_en" name="type_description_short_en">{{ seal.type_description_short_en|safe }}</textarea>
 
     <p>
         <button type="submit" class="btn-primary">Сохранить</button>

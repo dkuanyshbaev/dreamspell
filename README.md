@@ -28,13 +28,24 @@ CREATE TABLE users (
 ### Seals Table
 ```sql
 CREATE TABLE seals (
-    id integer PRIMARY KEY AUTOINCREMENT,
-    name text Not null,
-    image text Not null,
-    archetype text Not null,
-    archetype_description text Not null,
-    portrait_description text Not null,
-    type_description text Not null
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    name_en TEXT NOT NULL,
+    image TEXT NOT NULL,
+    archetype TEXT NOT NULL,
+    archetype_en TEXT NOT NULL,
+    archetype_description TEXT NOT NULL,
+    archetype_description_short TEXT NOT NULL,
+    archetype_description_en TEXT NOT NULL,
+    archetype_description_short_en TEXT NOT NULL,
+    portrait_description TEXT NOT NULL,
+    portrait_description_short TEXT NOT NULL,
+    portrait_description_en TEXT NOT NULL,
+    portrait_description_short_en TEXT NOT NULL,
+    type_description TEXT NOT NULL,
+    type_description_short TEXT NOT NULL,
+    type_description_en TEXT NOT NULL,
+    type_description_short_en TEXT NOT NULL
 );
 ```
 

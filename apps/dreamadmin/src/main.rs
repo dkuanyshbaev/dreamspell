@@ -4,7 +4,7 @@
 use std::{env, sync::Arc};
 
 use axum::{
-    routing::{get, post, Router},
+    routing::{get, Router},
 };
 use tower_http::services::ServeDir;
 use axum_login::{
