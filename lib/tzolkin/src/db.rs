@@ -23,6 +23,43 @@ pub struct Seal {
     pub type_description_en: String,
 }
 
+impl Seal {
+    pub fn get_name(&self, lang: crate::Language) -> &str {
+        match lang {
+            crate::Language::Russian => &self.name,
+            crate::Language::English => &self.name_en,
+        }
+    }
+
+    pub fn get_archetype(&self, lang: crate::Language) -> &str {
+        match lang {
+            crate::Language::Russian => &self.archetype,
+            crate::Language::English => &self.archetype_en,
+        }
+    }
+
+    pub fn get_archetype_description(&self, lang: crate::Language) -> &str {
+        match lang {
+            crate::Language::Russian => &self.archetype_description,
+            crate::Language::English => &self.archetype_description_en,
+        }
+    }
+
+    pub fn get_portrait_description(&self, lang: crate::Language) -> &str {
+        match lang {
+            crate::Language::Russian => &self.portrait_description,
+            crate::Language::English => &self.portrait_description_en,
+        }
+    }
+
+    pub fn get_type_description(&self, lang: crate::Language) -> &str {
+        match lang {
+            crate::Language::Russian => &self.type_description,
+            crate::Language::English => &self.type_description_en,
+        }
+    }
+}
+
 pub async fn get_seal(db_pool: &SqlitePool, index: u32) -> Result<Seal, sqlx::Error> {
     sqlx::query_as::<_, Seal>("SELECT * FROM seals WHERE id = ?")
         .bind(index)

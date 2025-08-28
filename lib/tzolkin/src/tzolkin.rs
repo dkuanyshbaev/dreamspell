@@ -58,13 +58,13 @@ impl Tzolkin {
         Self {
             archetype_name: compound_name,
             archetype_image: main_seal.image.clone(),
-            archetype_description: main_seal.archetype_description.clone(),
-            portrait_name: main_seal.archetype.clone(),
+            archetype_description: main_seal.get_archetype_description(lang).to_string(),
+            portrait_name: main_seal.get_archetype(lang).to_string(),
             portrait_image: main_seal.image.clone(),
-            portrait_description: main_seal.portrait_description.clone(),
-            type_name: type_seal.archetype.clone(),
+            portrait_description: main_seal.get_portrait_description(lang).to_string(),
+            type_name: type_seal.get_archetype(lang).to_string(),
             type_image: type_seal.image.clone(),
-            type_description: type_seal.type_description.clone(),
+            type_description: type_seal.get_type_description(lang).to_string(),
         }
     }
 
@@ -106,13 +106,16 @@ pub fn archetype(kin: u32) -> (u32, u32) {
 }
 
 fn build_compound_name(main_seal: &db::Seal, type_seal: &db::Seal, lang: Language) -> String {
-    if main_seal.name == type_seal.name {
+    let main_name = main_seal.get_name(lang);
+    let type_name = type_seal.get_name(lang);
+    
+    if main_name == type_name {
         let prefix = match lang {
             Language::Russian => "Классический",
             Language::English => "Classic",
         };
-        format!("{} {}", prefix, type_seal.name)
+        format!("{} {}", prefix, type_name)
     } else {
-        format!("{} - {}", main_seal.name, type_seal.name)
+        format!("{} - {}", main_name, type_name)
     }
 }
