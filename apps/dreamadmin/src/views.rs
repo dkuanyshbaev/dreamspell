@@ -20,15 +20,12 @@ pub struct SealForm {
     pub archetype_description: String,
     pub archetype_description_short: String,
     pub archetype_description_en: String,
-    pub archetype_description_short_en: String,
     pub portrait_description: String,
     pub portrait_description_short: String,
     pub portrait_description_en: String,
-    pub portrait_description_short_en: String,
     pub type_description: String,
     pub type_description_short: String,
     pub type_description_en: String,
-    pub type_description_short_en: String,
 }
 
 use crate::auth::{AuthSession, Credentials};
@@ -132,15 +129,12 @@ pub async fn seal_update(
         archetype_description: form.archetype_description,
         archetype_description_short: form.archetype_description_short,
         archetype_description_en: form.archetype_description_en,
-        archetype_description_short_en: form.archetype_description_short_en,
         portrait_description: form.portrait_description,
         portrait_description_short: form.portrait_description_short,
         portrait_description_en: form.portrait_description_en,
-        portrait_description_short_en: form.portrait_description_short_en,
         type_description: form.type_description,
         type_description_short: form.type_description_short,
         type_description_en: form.type_description_en,
-        type_description_short_en: form.type_description_short_en,
     };
     
     match update_seal(&state.db_pool, &seal).await {

@@ -37,15 +37,13 @@ CREATE TABLE seals (
     archetype_description TEXT NOT NULL,
     archetype_description_short TEXT NOT NULL,
     archetype_description_en TEXT NOT NULL,
-    archetype_description_short_en TEXT NOT NULL,
     portrait_description TEXT NOT NULL,
     portrait_description_short TEXT NOT NULL,
     portrait_description_en TEXT NOT NULL,
-    portrait_description_short_en TEXT NOT NULL,
     type_description TEXT NOT NULL,
     type_description_short TEXT NOT NULL,
     type_description_en TEXT NOT NULL,
-    type_description_short_en TEXT NOT NULL
+    type_description_short TEXT NOT NULL
 );
 ```
 
