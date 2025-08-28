@@ -3,20 +3,45 @@
 {% block title %}{{ seal.name }} - Dreamadmin{% endblock %}
 
 {% block content %}
-<h2>{{ seal.name }}</h2>
+<form method="post" action="/admin/seal/{{ seal.id }}">
+    <p><strong>Номер:</strong> {{ seal.id }}</p>
 
-<p><strong>ID:</strong> {{ seal.id }}</p>
-<p><strong>Image:</strong> {{ seal.image }}</p>
+    <div>
+        <label for="name"><strong>Название:</strong></label>
+        <input type="text" id="name" name="name" value="{{ seal.name }}" required>
+    </div>
 
-<h3>Archetype</h3>
-<p><strong>Name:</strong> {{ seal.archetype }}</p>
-<p><strong>Description:</strong> {{ seal.archetype_description|safe }}</p>
+    <div>
+        <label for="image"><strong>Изображение:</strong></label>
+        <input type="text" id="image" name="image" value="{{ seal.image }}">
+    </div>
 
-<h3>Portrait Description</h3>
-<p>{{ seal.portrait_description|safe }}</p>
+    <h3>Архетип</h3>
+    <div>
+        <label for="archetype"><strong>Название:</strong></label>
+        <input type="text" id="archetype" name="archetype" value="{{ seal.archetype }}">
+    </div>
 
-<h3>Type Description</h3>
-<p>{{ seal.type_description|safe }}</p>
+    <div>
+        <label for="archetype_description"><strong>Описание:</strong></label>
+        <textarea id="archetype_description" name="archetype_description" rows="5" cols="80">{{ seal.archetype_description }}</textarea>
+    </div>
 
-<p><a href="/admin">← Back to Seals List</a></p>
+    <h3>Описание портрета</h3>
+    <div>
+        <label for="portrait_description"></label>
+        <textarea id="portrait_description" name="portrait_description" rows="5" cols="80">{{ seal.portrait_description }}</textarea>
+    </div>
+
+    <h3>Описание типа</h3>
+    <div>
+        <label for="type_description"></label>
+        <textarea id="type_description" name="type_description" rows="5" cols="80">{{ seal.type_description }}</textarea>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <button type="submit">Сохранить</button>
+        <a href="/admin">Отмена</a>
+    </div>
+</form>
 {% endblock %}

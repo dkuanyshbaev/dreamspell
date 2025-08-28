@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
-{% block title %}Admin Dashboard - Dreamadmin{% endblock %}
+{% block title %}Панель управления - Dreamadmin{% endblock %}
 
 {% block content %}
-<h2>Seals</h2>
+<h2>Печати</h2>
 
 <ul style="list-style-type: none;">
 {% for seal in seals %}
@@ -11,5 +11,5 @@
 {% endfor %}
 </ul>
 
-<p><a href="/logout">Logout</a></p>
+<p><a href="/logout">Выход</a></p>
 {% endblock %}

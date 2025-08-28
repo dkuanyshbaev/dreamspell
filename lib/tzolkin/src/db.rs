@@ -27,3 +27,20 @@ pub async fn get_all_seals(db_pool: &SqlitePool) -> Result<Vec<Seal>, sqlx::Erro
         .fetch_all(db_pool)
         .await
 }
+
+pub async fn update_seal(db_pool: &SqlitePool, seal: &Seal) -> Result<(), sqlx::Error> {
+    sqlx::query(
+        "UPDATE seals SET name = ?, image = ?, archetype = ?, archetype_description = ?, portrait_description = ?, type_description = ? WHERE id = ?"
+    )
+    .bind(&seal.name)
+    .bind(&seal.image)
+    .bind(&seal.archetype)
+    .bind(&seal.archetype_description)
+    .bind(&seal.portrait_description)
+    .bind(&seal.type_description)
+    .bind(seal.id)
+    .execute(db_pool)
+    .await?;
+    
+    Ok(())
+}

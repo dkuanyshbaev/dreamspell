@@ -7,16 +7,25 @@ use axum::{
     response::{IntoResponse, Redirect},
     Form,
 };
+use serde::Deserialize;
 use std::sync::Arc;
+
+#[derive(Deserialize)]
+pub struct SealForm {
+    pub name: String,
+    pub image: String,
+    pub archetype: String,
+    pub archetype_description: String,
+    pub portrait_description: String,
+    pub type_description: String,
+}
 
 use crate::auth::{AuthSession, Credentials};
 use crate::templates::{HtmlTemplate, LoginTemplate, AdminTemplate, SealDetailTemplate};
 use crate::AdminState;
-use tzolkin::{get_all_seals, get_seal};
+use tzolkin::{get_all_seals, get_seal, update_seal, Seal};
 
 pub async fn admin(State(state): State<Arc<AdminState>>) -> HtmlTemplate<AdminTemplate> {
-    tracing::info!("Admin dashboard accessed");
-    
     let seals = match get_all_seals(&state.db_pool).await {
         Ok(seals) => seals,
         Err(e) => {
@@ -84,8 +93,6 @@ pub async fn seal_detail(
     State(state): State<Arc<AdminState>>,
     Path(id): Path<u32>,
 ) -> impl IntoResponse {
-    tracing::info!(seal_id = %id, "Seal detail page accessed");
-    
     match get_seal(&state.db_pool, id).await {
         Ok(seal) => {
             HtmlTemplate(SealDetailTemplate { seal }).into_response()
@@ -93,6 +100,35 @@ pub async fn seal_detail(
         Err(e) => {
             tracing::error!(seal_id = %id, error = %e, "Failed to fetch seal");
             (StatusCode::NOT_FOUND, "Seal not found").into_response()
+        }
+    }
+}
+
+pub async fn seal_update(
+    State(state): State<Arc<AdminState>>,
+    Path(id): Path<u32>,
+    Form(form): Form<SealForm>,
+) -> impl IntoResponse {
+    tracing::info!(seal_id = %id, "Seal update requested");
+    
+    let seal = Seal {
+        id: id as u8,
+        name: form.name,
+        image: form.image,
+        archetype: form.archetype,
+        archetype_description: form.archetype_description,
+        portrait_description: form.portrait_description,
+        type_description: form.type_description,
+    };
+    
+    match update_seal(&state.db_pool, &seal).await {
+        Ok(_) => {
+            tracing::info!(seal_id = %id, "Seal updated successfully");
+            Redirect::to("/admin").into_response()
+        }
+        Err(e) => {
+            tracing::error!(seal_id = %id, error = %e, "Failed to update seal");
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to update seal").into_response()
         }
     }
 }

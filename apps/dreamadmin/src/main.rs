@@ -4,7 +4,7 @@
 use std::{env, sync::Arc};
 
 use axum::{
-    routing::{get, Router},
+    routing::{get, post, Router},
 };
 use axum_login::{
     login_required,
@@ -67,7 +67,7 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let app = Router::new()
         .route("/admin", get(admin))
-        .route("/admin/seal/{id}", get(views::seal_detail))
+        .route("/admin/seal/{id}", get(views::seal_detail).post(views::seal_update))
         .route("/logout", get(logout))
         .route_layer(login_required!(auth::Backend, login_url = "/login"))
         .route("/", get(root_redirect))
