@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+{# <body class="d-flex h-100 text-center text-bg-dark"> #}
+<body class="d-flex text-center text-bg-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="mb-auto">
+            <div>
+                <h3 class="float-md-start mb-0">Dreamspell</h3>
+                <nav class="nav nav-masthead justify-content-center float-md-end">
+                    <a class="nav-link fw-bold py-1 px-0 active" href="/">РУССКИЙ</a>
+                    <a class="nav-link fw-bold py-1 px-0" href="/en">ENGLISH</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="px-3">
+            <img src="/static/img/logo.png" width=100px;>
+            <h1>Dreamspell</h1>
+            <p class="lead"><b>Dreamspell</b> - это универсальный язык образов, позволяющий настроиться на своё истинное Я.<br>В <b>Dreamspell</b> мировые духовные знания объединены с помощью системы календарей Майя.</p>
+            <br>
+            <p class="lead"><i>Чем дальше 2012 год, тем шире распахивается перед нами новая эпоха, не правда ли?</i></p>
+            <br>
+            <p class="lead">Начать знакомство с <b>Dreamspell</b> лучше всего с <b>базового прочтения</b>, которая включает:</p>
+            <p class="lead">
+            <ul>
+                <li>
+                    Твоё предназначение и главный урок жизни, которым необходимо придавать должное значение
+                </li>
+                <li>
+                    Судьба в масштабе от десятилетий до недель. Сформулирую и расставлю по местам то, что сейчас важно именно для тебя
+                </li>
+                <li>
+                    Индивидуальное сопровождение с регулярными напоминаниями о каждом новом этапе. Это поможет оставаться в контакте с собой.</p>
+                </li>
+            </ul>
+            <br>
+            <a href="https://t.me/swami_sattyanand" target="_blank" class="btn btn-lg btn-light fw-bold border-white bg-white">Заказать прочтение</a>
+            <br>
+            <br>
+            <p class="lead">Узнать предназначение по дате рождения</p>
+            <a href="/howto" target="_blank" class="text-white">Как использовать</a>
+            <br>
+            <br>
+            <form action="/" method="post">
+                <p class="lead"><input type="date" name="birth_date" required></p>
+                <p class="lead"><input type="submit" class="btn btn-lg btn-light fw-bold border-white bg-white" value="Поехали!"></p>
+            </form>
+            <p class="lead">нажимая эту кнопку вы соглашаетесь с условиями <a href="/oferta" target="_blank" class="text-white">публичной оферты</a></p>
+            <br>
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p><a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">Если хотите индивидуальное предложение, то пишите сюда!</a>
+        </footer>
+    </div>
+</body>
+{% endblock %}

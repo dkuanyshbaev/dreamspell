@@ -2,56 +2,61 @@
 {% block content %}
 <body class="d-flex text-center text-bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <!-- Keep improved header with flags -->
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">Dreamspell</h3>
-                <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="nav-link fw-bold py-1 px-0" href="/">РУССКИЙ</a>
-                    <a class="nav-link fw-bold py-1 px-0 active" href="/en">ENGLISH</a>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link fw-bold py-2 px-3 lang-toggle" href="/">🇷🇺 РУС</a>
+                    <a class="nav-link fw-bold py-2 px-3 active lang-toggle" href="/en">🇬🇧 ENG</a>
                 </nav>
             </div>
         </header>
 
         <main class="px-3">
-            <img src="/static/img/logo.png" width=100px;>
-            <h1>Dreamspell</h1>
-            <p class="lead"><b>Dreamspell</b>is a universal figurative language that attunes you to your higher self.<br>Spiritual knowledges of the world are united in <b>Dreamspell</b> through the calendar system of ancient Maya.</p>
-            <br>
-            <p class="lead"><i>The further behind we leave
-                year 2012, the clearer it becomes, that the world as we know it
-                has come to an end.</i></p>
+            <!-- Keep larger logo with animation -->
+            <img src="/static/img/logo.png" width="180px" class="mb-4 logo-pulse">
+            
+            <!-- Keep improved title styling -->
+            <h1 class="display-4 fw-bold mb-3">Dreamspell</h1>
+            
+            <!-- Original text content -->
+            <p class="lead"><b>Dreamspell</b> is a universal figurative language that attunes you to your higher self.<br>Spiritual knowledge of the world is united in <b>Dreamspell</b> through the calendar system of ancient Maya.</p>
             <br>
             <p class="lead"><b>Basic reading</b> would be the best way to introduce yourself to capabilities of <b>Dreamspell</b>. It includes:</p>
             <p class="lead">
-            <ul>
+            <ul class="text-start mx-auto" style="max-width: 600px;">
                 <li>
                     Your life mission and the one lesson of life you need to master to fulfill your purpose. Which is usually known, but often neglected.
                 </li>
                 <li>
-                    Your destiny in a scale from decades to weeks. What’s been going through your mind will be put in words and into its places for you to achieve clarity.
+                    Your destiny in a scale from decades to weeks. What's been going through your mind will be put in words and into its places for you to achieve clarity.
                 </li>
                 <li>
                     Personal guidance with regular forecasts delivered to you each time the situation changes. Which allows to stay in touch with your higher self.
                 </li>
             </ul>
-            <br>
-            <a href="https://t.me/swami_sattyanand" target="_blank" class="btn btn-lg btn-light fw-bold border-white bg-white">Request a reading</a>
+            </p>
             <br>
             <br>
             <p class="lead">Learn your mission by birth date</p>
-            <a href="/howto_en" target="_blank" class="text-white">How to use</a>
+            <a href="/howto_en" target="_blank" class="text-white-50">How to use</a>
             <br>
             <br>
+            <!-- Keep improved form styling -->
             <form action="/en" method="post">
-                <p class="lead"><input type="date" name="birth_date" required></p>
-                <p class="lead"><input type="submit" class="btn btn-lg btn-light fw-bold border-white bg-white" value="GO!"></p>
+                <p class="lead">
+                    <input type="date" name="birth_date" required class="form-control form-control-lg date-input mx-auto" style="max-width: 300px;">
+                </p>
+                <p class="lead">
+                    <input type="submit" class="btn btn-lg btn-primary fw-bold px-5 py-2" value="GO!">
+                </p>
             </form>
-            <p class="lead">by pressing this button you <a href="/oferta_en" target="_blank" class="text-white">agree to process your personal data</a></p>
+            <small class="text-white-50">by pressing this button you <a href="/oferta_en" target="_blank" class="text-white-50">agree to process your personal data</a></small>
             <br>
         </main>
 
         <footer class="mt-auto text-white-50">
-            <p><a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">Any questions? Click here!</a>
+            <p class="lead"><a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">If you want a personal offer, write here!</a>
         </footer>
     </div>
 </body>

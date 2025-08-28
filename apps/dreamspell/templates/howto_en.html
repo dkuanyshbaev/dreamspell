@@ -1,29 +1,97 @@
 {% extends "layout.html" %}
 {% block content %}
 <body class="d-flex text-center text-bg-dark">
-    <p class="lead">
-READ BEFORE USING THE DATE CONVERTER:
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <!-- Header with navigation -->
+        <header class="mb-auto">
+            <div>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link fw-bold py-2 px-3 lang-toggle" href="/en">🏠 Home</a>
+                    <a class="nav-link fw-bold py-2 px-3 active lang-toggle" href="/howto_en">📖 How to use</a>
+                    <a class="nav-link fw-bold py-2 px-3 lang-toggle" href="/">🇷🇺 РУС</a>
+                </nav>
+            </div>
+        </header>
 
+        <main class="px-3">
+            <h1 class="display-5 fw-bold mb-4">How to use the calculator</h1>
+            
+            <!-- Important notice section -->
+            <div class="info-section p-4 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h2 class="h4 mb-4 text-warning">⚠️ Read before using the date converter</h2>
+                
+                <div class="text-start">
+                    <p class="lead mb-4">
+                        Please, note that in order to get correct results the time of birth must be accounted for.
+                    </p>
+                    
+                    <p class="mb-3">
+                        Usually, the time of birth is not significant in <strong>Dreamspell</strong>, only the date. However, there is an important nuance that should be taken into account for those who were born between <strong>midnight and 01:30 AM</strong>.
+                    </p>
+                    
+                    <div class="alert alert-info mb-4">
+                        <p class="mb-2">
+                            <strong>The change of day occurs not at local time, but at astronomical midnight:</strong> the exact moment between sunset and dawn. That time is usually around 01AM, plus/minus half hour.
+                        </p>
+                    </div>
+                    
+                    <h3 class="h5 mb-3">Which means that:</h3>
+                    <ul class="text-start mx-auto list-unstyled" style="max-width: 600px;">
+                        <li class="mb-3 p-3 rounded" style="background: rgba(40, 167, 69, 0.2); border-left: 4px solid #28a745;">
+                            <strong>🕛 If you were born between 00:00 and 00:30 AM:</strong><br>
+                            You will need to enter the date previous to your birthday
+                        </li>
+                        <li class="mb-3 p-3 rounded" style="background: rgba(255, 193, 7, 0.2); border-left: 4px solid #ffc107;">
+                            <strong>🕐 If you were born between 00:30 and 01:30 AM:</strong><br>
+                            Send us a <a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">direct message</a>, and we will help you figure it out
+                        </li>
+                        <li class="mb-3 p-3 rounded" style="background: rgba(40, 167, 69, 0.2); border-left: 4px solid #28a745;">
+                            <strong>✅ If you were born between 01:30 AM and 23:59 PM:</strong><br>
+                            This does not concern you; you have nothing to worry about! Just enter your date of birth and enjoy!
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-Please, note that in order to get correct results the time of birth must be accounted for.
+            <!-- How to use section -->
+            <div class="how-to-section p-4 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h2 class="h4 mb-4">🚀 How to use</h2>
+                
+                <div class="row text-start">
+                    <div class="col-md-4 mb-3">
+                        <div class="step-card p-3 h-100" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                            <h3 class="h5 mb-2">1️⃣ Enter date</h3>
+                            <p class="mb-0">Select your birth date in the calendar</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="step-card p-3 h-100" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                            <h3 class="h5 mb-2">2️⃣ Click "GO!"</h3>
+                            <p class="mb-0">The system will calculate your archetype according to the Mayan calendar</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="step-card p-3 h-100" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                            <h3 class="h5 mb-2">3️⃣ Study the result</h3>
+                            <p class="mb-0">Get a description of your purpose and characteristics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-Usually, the time of birth is not significant in Dreamspell, only the date.
-However, there is an important nuance that should be taken into account
-for those who were born between midnight and 01:30 AM.
+            <!-- Call to action -->
+            <div class="text-center">
+                <a href="/en" class="btn btn-primary btn-lg px-5 py-3 fw-bold">
+                    Try the calculator
+                </a>
+            </div>
+        </main>
 
-The change of day occurs not at local time, but at astronomical midnight:
-the exact moment between sunset and dawn.
-That time is usually around 01AM, plus/minus half hour.
-
-Which means that:
-if you were born between 00:00 and 00:30AM, then you will need to enter the date previous to your birthday
-if you were born between 00:30 and 01:30AM, then send us a DM, and we will help you figure it out
-if you were born between 01:30AM and 23:59PM, then this does not concern you; you have nothing to worry about. Just enter your date of birth and enjoy!
-
-
-
-    </p>
+        <footer class="mt-auto text-white-50">
+            <p class="small">
+                <a href="/en" class="text-white-50">← Back to home</a>
+            </p>
+        </footer>
+    </div>
 </body>
 {% endblock %}
-
-

@@ -1,28 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
-{# <body class="d-flex h-100 text-center text-bg-dark"> #}
 <body class="d-flex text-center text-bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <!-- Keep improved header with flags -->
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">Dreamspell</h3>
-                <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="nav-link fw-bold py-1 px-0 active" href="/">РУССКИЙ</a>
-                    <a class="nav-link fw-bold py-1 px-0" href="/en">ENGLISH</a>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link fw-bold py-2 px-3 active lang-toggle" href="/">🇷🇺 РУС</a>
+                    <a class="nav-link fw-bold py-2 px-3 lang-toggle" href="/en">🇬🇧 ENG</a>
                 </nav>
             </div>
         </header>
 
         <main class="px-3">
-            <img src="/static/img/logo.png" width=100px;>
-            <h1>Dreamspell</h1>
+            <!-- Keep larger logo with animation -->
+            <img src="/static/img/logo.png" width="180px" class="mb-4 logo-pulse">
+            
+            <!-- Keep improved title styling -->
+            <h1 class="display-4 fw-bold mb-3">Dreamspell</h1>
+            
+            <!-- Original text content -->
             <p class="lead"><b>Dreamspell</b> - это универсальный язык образов, позволяющий настроиться на своё истинное Я.<br>В <b>Dreamspell</b> мировые духовные знания объединены с помощью системы календарей Майя.</p>
             <br>
-            <p class="lead"><i>Чем дальше 2012 год, тем шире распахивается перед нами новая эпоха, не правда ли?</i></p>
-            <br>
-            <p class="lead">Начать знакомство с <b>Dreamspell</b> лучше всего с <b>базового прочтения</b>, которая включает:</p>
+            <p class="lead">Начать знакомство с <b>Dreamspell</b> лучше всего с <b>базового прочтения</b>, которое включает:</p>
             <p class="lead">
-            <ul>
+            <ul class="text-start mx-auto" style="max-width: 600px;">
                 <li>
                     Твоё предназначение и главный урок жизни, которым необходимо придавать должное значение
                 </li>
@@ -30,27 +32,31 @@
                     Судьба в масштабе от десятилетий до недель. Сформулирую и расставлю по местам то, что сейчас важно именно для тебя
                 </li>
                 <li>
-                    Индивидуальное сопровождение с регулярными напоминаниями о каждом новом этапе. Это поможет оставаться в контакте с собой.</p>
+                    Индивидуальное сопровождение с регулярными напоминаниями о каждом новом этапе. Это поможет оставаться в контакте с собой.
                 </li>
             </ul>
-            <br>
-            <a href="https://t.me/swami_sattyanand" target="_blank" class="btn btn-lg btn-light fw-bold border-white bg-white">Заказать прочтение</a>
+            </p>
             <br>
             <br>
             <p class="lead">Узнать предназначение по дате рождения</p>
-            <a href="/howto" target="_blank" class="text-white">Как использовать</a>
+            <a href="/howto" target="_blank" class="text-white-50">Как использовать</a>
             <br>
             <br>
+            <!-- Keep improved form styling -->
             <form action="/" method="post">
-                <p class="lead"><input type="date" name="birth_date" required></p>
-                <p class="lead"><input type="submit" class="btn btn-lg btn-light fw-bold border-white bg-white" value="Поехали!"></p>
+                <p class="lead">
+                    <input type="date" name="birth_date" required class="form-control form-control-lg date-input mx-auto" style="max-width: 300px;">
+                </p>
+                <p class="lead">
+                    <input type="submit" class="btn btn-lg btn-primary fw-bold px-5 py-2" value="Поехали!">
+                </p>
             </form>
-            <p class="lead">нажимая эту кнопку вы соглашаетесь с условиями <a href="/oferta" target="_blank" class="text-white">публичной оферты</a></p>
+            <small class="text-white-50">нажимая эту кнопку вы соглашаетесь с условиями <a href="/oferta" target="_blank" class="text-white-50">публичной оферты</a></small>
             <br>
         </main>
 
         <footer class="mt-auto text-white-50">
-            <p><a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">Если хотите индивидуальное предложение, то пишите сюда!</a>
+            <p class="lead"><a href="https://t.me/swami_sattyanand" target="_blank" class="text-white">Если хотите индивидуальное предложение, то пишите сюда!</a>
         </footer>
     </div>
 </body>

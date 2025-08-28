@@ -2,49 +2,335 @@
  * Globals
  */
 
+/* Import Google Fonts for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Custom default button */
 .btn-light,
 .btn-light:hover,
 .btn-light:focus {
   color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
+  text-shadow: none;
 }
 
+/* Primary button styling - consistent typography */
+.btn {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  font-size: 1.05rem;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.btn-lg {
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+}
+
+.btn-outline-light {
+  border-width: 2px;
+  transition: all 0.3s ease;
+  font-weight: 400;
+}
+
+.btn-outline-light:hover {
+  transform: translateX(3px);
+}
 
 /*
  * Base structure
  */
 
 body {
-  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  min-height: 100vh;
+  /* Removed aggressive text shadow */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  /* Removed inset shadow for cleaner look */
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 48em;
 }
 
+/*
+ * Typography improvements - Consistent styling
+ */
+h1, .h1 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h2, .h2 {
+  font-weight: 500;
+}
+
+h3, .h3 {
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+p {
+  line-height: 1.7;
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Consistent lead text styling */
+.lead {
+  font-size: 1.1rem !important;
+  font-weight: 300 !important;
+  line-height: 1.7 !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.lead b, .lead strong {
+  font-weight: 500;
+  color: #fff;
+}
+
+.lead i, .lead em {
+  font-style: italic;
+  opacity: 0.95;
+}
+
+/* List items consistent with body text */
+ul li {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.display-4 {
+  font-size: 3.5rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+/* Links consistent styling */
+a {
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Small text consistency */
+small, .small {
+  font-size: 0.875rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  p, .lead {
+    font-size: 1rem !important;
+  }
+  
+  ul li {
+    font-size: 0.95rem;
+  }
+}
 
 /*
  * Header
  */
 
 .nav-masthead .nav-link {
-  color: rgba(255, 255, 255, .5);
+  color: rgba(255, 255, 255, .7);
   border-bottom: .25rem solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 0 0.25rem;
 }
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
-}
-
-.nav-masthead .nav-link + .nav-link {
-  margin-left: 1rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: transparent;
 }
 
 .nav-masthead .active {
   color: #fff;
-  border-bottom-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-bottom-color: transparent;
+}
+
+/* Language toggle improvements */
+.lang-toggle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 1rem !important;
+}
+
+/*
+ * Main content area
+ */
+
+/* Logo animation */
+.logo-pulse {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Calculation section */
+.calc-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.calc-section:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Form improvements */
+.date-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.date-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+  color: #fff;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* Accordion improvements */
+.accordion-button {
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 1rem;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+.accordion-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.accordion-button:not(.collapsed) {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff;
+  box-shadow: none;
+}
+
+.accordion-button::after {
+  filter: invert(1);
+}
+
+.accordion-body {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 0 8px 8px;
+  padding: 1.5rem;
+}
+
+.accordion-body ul li {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* Text color utilities */
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Footer - consistent typography */
+footer {
+  padding-top: 2rem;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+footer p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+footer a {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+footer a:hover {
+  color: #fff !important;
+  opacity: 1;
+}
+
+/* Mobile optimizations */
+@media (max-width: 576px) {
+  .cover-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .calc-section {
+    padding: 1.5rem !important;
+  }
+  
+  .btn-lg {
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+  }
+  
+  .date-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }
