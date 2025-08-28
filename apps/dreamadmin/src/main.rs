@@ -23,7 +23,7 @@ pub mod auth;
 pub mod templates;
 pub mod views;
 
-const MAX_DB_CONNECTIONS: u32 = 5;
+const MAX_DB_CONNECTIONS: u32 = 3;
 const DEFAULT_PORT: u16 = 4444;
 const DEFAULT_HOST: &str = "0.0.0.0";
 

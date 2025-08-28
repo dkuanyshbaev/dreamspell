@@ -18,7 +18,7 @@ type DreamStorage = std::sync::Arc<ErasedStorage<State>>;
 type HandlerResult = Result<(), Box<dyn std::error::Error + Send + Sync>>;
 
 const DATE_FORMAT: &str = "%d.%m.%Y";
-const MAX_DB_CONNECTIONS: u32 = 5;
+const MAX_DB_CONNECTIONS: u32 = 10;
 
 #[derive(Clone, Default, serde::Serialize, serde::Deserialize)]
 pub enum State {
