@@ -1,23 +1,37 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Dreamadmin</title>
+    <link rel="stylesheet" href="/static/water.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        main {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Dreamadmin</h1>
+        {% match error %}
+            {% when Some with (msg) %}
+                <p><strong>{{ msg }}</strong></p>
+            {% when None %}
+        {% endmatch %}
 
-{% block title %}Вход - Dreamadmin{% endblock %}
-
-{% block content %}
-
-{% match error %}
-    {% when Some with (msg) %}
-        <p style="color: red;">{{ msg }}</p>
-    {% when None %}
-{% endmatch %}
-
-<form method="post" action="/login">
-    <div>
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required autofocus>
-    </div>
-    
-    <div>
-        <button type="submit">Войти</button>
-    </div>
-</form>
-{% endblock %}
+        <form method="post" action="/login">
+            <input type="password" id="password" name="password" required autofocus>
+            <button type="submit">Войти</button>
+        </form>
+    </main>
+</body>
+</html>

@@ -6,6 +6,7 @@ use std::{env, sync::Arc};
 use axum::{
     routing::{get, post, Router},
 };
+use tower_http::services::ServeDir;
 use axum_login::{
     login_required,
     tower_sessions::{session_store::ExpiredDeletion, Expiry, SessionManagerLayer},
@@ -72,6 +73,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .route_layer(login_required!(auth::Backend, login_url = "/login"))
         .route("/", get(root_redirect))
         .route("/login", get(login_get).post(login_post))
+        .nest_service("/static", ServeDir::new("apps/dreamadmin/static"))
         .with_state(state)
         .fallback(nothing)
         .layer(auth_layer);

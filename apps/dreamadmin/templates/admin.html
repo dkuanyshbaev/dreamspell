@@ -3,13 +3,27 @@
 {% block title %}Панель управления - Dreamadmin{% endblock %}
 
 {% block content %}
-<h2>Печати</h2>
+<section>
+    <header>
+        <h2>Печати</h2>
+    </header>
 
-<ul style="list-style-type: none;">
-{% for seal in seals %}
-    <li><a href="/admin/seal/{{ seal.id }}">{{ seal.id }}. {{ seal.name }}</a></li>
-{% endfor %}
-</ul>
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for seal in seals %}
+            <tr>
+                <td>{{ seal.id }}</td>
+                <td><a href="/admin/seal/{{ seal.id }}">{{ seal.name }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-<p><a href="/logout">Выход</a></p>
+</section>
 {% endblock %}

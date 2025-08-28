@@ -21,7 +21,7 @@ pub struct AdminTemplate {
 }
 
 #[derive(Template)]
-#[template(path = "seal_detail.html")]
+#[template(path = "form.html")]
 pub struct SealDetailTemplate {
     pub seal: Seal,
 }
