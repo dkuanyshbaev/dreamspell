@@ -314,13 +314,65 @@ footer a:hover {
   opacity: 1;
 }
 
+/* Result section styling for consistency */
+.result-section {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.result-section:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
 /* Mobile optimizations */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .cover-container {
     max-width: 100%;
     padding: 0 1rem;
   }
   
+  .result-section {
+    padding: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .result-section h2 {
+    font-size: 1.35rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .result-section p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+  
+  .result-section .lead {
+    font-size: 1rem !important;
+  }
+  
+  .legal-content p {
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+    text-align: justify;
+  }
+  
+  .legal-content h2 {
+    font-size: 1.25rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  .legal-content ul {
+    padding-left: 1.25rem;
+  }
+  
+  .legal-content ul li {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
   .calc-section {
     padding: 1.5rem !important;
   }
@@ -333,4 +385,41 @@ footer a:hover {
   .date-input {
     font-size: 16px; /* Prevents zoom on iOS */
   }
+  
+  .result-section {
+    padding: 1rem !important;
+  }
+  
+  .result-section h2 {
+    font-size: 1.2rem !important;
+  }
+  
+  .legal-content {
+    padding: 0 !important;
+  }
+  
+  .legal-content p, .legal-content li {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* CTA section consistent styling */
+.cta-section {
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.cta-section:hover {
+  background: rgba(102, 126, 234, 0.15) !important;
+  border-color: rgba(102, 126, 234, 0.3) !important;
+}
+
+.cta-section h3 {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.cta-section p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
 }
