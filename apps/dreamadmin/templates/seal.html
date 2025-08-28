@@ -19,8 +19,9 @@
 <h2>Печать №{{ seal.id }} - {{ seal.name }}</h2>
 
 <form method="post" action="/admin/seal/{{ seal.id }}">
-    <label for="image">Изображение:</label>
-    <input type="text" id="image" name="image" value="{{ seal.image }}">
+    <h3>Изображение</h3>
+    <img src="/static/seals/{{ seal.image }}" alt="{{ seal.name }}" style="max-width: 200px; height: auto; display: block; margin-bottom: 20px;">
+    <input type="hidden" name="image" value="{{ seal.image }}">
 
     <h3>Название</h3>
     <label for="name">Русский:</label>
