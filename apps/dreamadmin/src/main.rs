@@ -17,7 +17,7 @@ use time::Duration;
 use tower_sessions_sqlx_store::SqliteStore;
 use tracing_subscriber;
 
-use views::{admin, login_get, login_post, logout, nothing, root_redirect};
+use views::{admin, health, login_get, login_post, logout, nothing, root_redirect};
 
 pub mod auth;
 pub mod templates;
@@ -73,6 +73,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .route_layer(login_required!(auth::Backend, login_url = "/login"))
         .route("/", get(root_redirect))
         .route("/login", get(login_get).post(login_post))
+        .route("/health", get(health))
         .nest_service("/static", ServeDir::new("apps/dreamadmin/static"))
         .with_state(state)
         .fallback(nothing)

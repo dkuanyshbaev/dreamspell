@@ -5,10 +5,17 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
     response::{IntoResponse, Redirect},
-    Form,
+    Form, Json,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+
+#[derive(Serialize)]
+pub struct HealthResponse {
+    status: String,
+    database: String,
+    timestamp: i64,
+}
 
 #[derive(Deserialize)]
 pub struct SealForm {
@@ -150,6 +157,38 @@ pub async fn seal_update(
 }
 
 
+
+pub async fn health(State(state): State<Arc<AdminState>>) -> impl IntoResponse {
+    // Check database connectivity
+    let db_status = match sqlx::query("SELECT 1").fetch_one(&state.db_pool).await {
+        Ok(_) => {
+            tracing::debug!("Health check: database connection OK");
+            "connected"
+        }
+        Err(e) => {
+            tracing::error!(error = %e, "Health check: database connection failed");
+            "disconnected"
+        }
+    };
+
+    let response = HealthResponse {
+        status: if db_status == "connected" {
+            "healthy".to_string()
+        } else {
+            "unhealthy".to_string()
+        },
+        database: db_status.to_string(),
+        timestamp: time::OffsetDateTime::now_utc().unix_timestamp(),
+    };
+
+    let status_code = if db_status == "connected" {
+        StatusCode::OK
+    } else {
+        StatusCode::SERVICE_UNAVAILABLE
+    };
+
+    (status_code, Json(response))
+}
 
 pub async fn nothing() -> impl IntoResponse {
     tracing::warn!("404 Not Found - unknown route requested");
