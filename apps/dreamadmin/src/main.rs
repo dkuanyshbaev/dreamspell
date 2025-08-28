@@ -1,7 +1,7 @@
 //////////////////////////////////////////
 // Dreamadmin server
 //////////////////////////////////////////
-use std::env;
+use std::{env, sync::Arc};
 
 use axum::{
     routing::{get, Router},
@@ -11,7 +11,7 @@ use axum_login::{
     tower_sessions::{session_store::ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-use sqlx::sqlite::SqlitePoolOptions;
+use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use time::Duration;
 use tower_sessions_sqlx_store::SqliteStore;
 use tracing_subscriber;
@@ -27,7 +27,7 @@ const DEFAULT_PORT: u16 = 4444;
 const DEFAULT_HOST: &str = "0.0.0.0";
 
 pub struct AdminState {
-    pub backend: auth::Backend,
+    pub db_pool: SqlitePool,
 }
 
 #[tokio::main]
@@ -47,8 +47,10 @@ async fn main() -> Result<(), sqlx::Error> {
         .await?;
 
     // Session layer.
-    let session_store = SqliteStore::new(db_pool);
+    let session_store = SqliteStore::new(db_pool.clone());
     session_store.migrate().await?;
+    
+    let state = Arc::new(AdminState { db_pool });
 
     let deletion_task = tokio::task::spawn(
         session_store
@@ -65,10 +67,12 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let app = Router::new()
         .route("/admin", get(admin))
+        .route("/admin/seal/{id}", get(views::seal_detail))
         .route("/logout", get(logout))
         .route_layer(login_required!(auth::Backend, login_url = "/login"))
         .route("/", get(root_redirect))
         .route("/login", get(login_get).post(login_post))
+        .with_state(state)
         .fallback(nothing)
         .layer(auth_layer);
 

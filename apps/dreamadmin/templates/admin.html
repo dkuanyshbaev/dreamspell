@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 
-{% block title %}Admin Dashboard - Dreamspell Admin{% endblock %}
+{% block title %}Admin Dashboard - Dreamadmin{% endblock %}
 
 {% block content %}
-<h2>Hello Admin!</h2>
+<h2>Seals</h2>
 
-<p>Welcome to the Dreamspell Admin Dashboard.</p>
+<ul style="list-style-type: none;">
+{% for seal in seals %}
+    <li><a href="/admin/seal/{{ seal.id }}">{{ seal.id }}. {{ seal.name }}</a></li>
+{% endfor %}
+</ul>
 
 <p><a href="/logout">Logout</a></p>
 {% endblock %}

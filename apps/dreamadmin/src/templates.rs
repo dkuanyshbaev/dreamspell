@@ -6,6 +6,7 @@ use axum::{
     http::StatusCode,
     response::{Html, IntoResponse, Response},
 };
+use tzolkin::Seal;
 
 #[derive(Template)]
 #[template(path = "login.html")]
@@ -15,7 +16,15 @@ pub struct LoginTemplate {
 
 #[derive(Template)]
 #[template(path = "admin.html")]
-pub struct AdminTemplate;
+pub struct AdminTemplate {
+    pub seals: Vec<Seal>,
+}
+
+#[derive(Template)]
+#[template(path = "seal_detail.html")]
+pub struct SealDetailTemplate {
+    pub seal: Seal,
+}
 
 pub struct HtmlTemplate<T>(pub T);
 

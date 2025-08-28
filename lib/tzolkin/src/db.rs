@@ -21,3 +21,9 @@ pub async fn get_seal(db_pool: &SqlitePool, index: u32) -> Result<Seal, sqlx::Er
         .fetch_one(db_pool)
         .await
 }
+
+pub async fn get_all_seals(db_pool: &SqlitePool) -> Result<Vec<Seal>, sqlx::Error> {
+    sqlx::query_as::<_, Seal>("SELECT * FROM seals ORDER BY id")
+        .fetch_all(db_pool)
+        .await
+}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ seal.name }} - Dreamadmin{% endblock %}
+
+{% block content %}
+<h2>{{ seal.name }}</h2>
+
+<p><strong>ID:</strong> {{ seal.id }}</p>
+<p><strong>Image:</strong> {{ seal.image }}</p>
+
+<h3>Archetype</h3>
+<p><strong>Name:</strong> {{ seal.archetype }}</p>
+<p><strong>Description:</strong> {{ seal.archetype_description|safe }}</p>
+
+<h3>Portrait Description</h3>
+<p>{{ seal.portrait_description|safe }}</p>
+
+<h3>Type Description</h3>
+<p>{{ seal.type_description|safe }}</p>
+
+<p><a href="/admin">← Back to Seals List</a></p>
+{% endblock %}

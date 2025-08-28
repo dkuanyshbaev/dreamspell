@@ -2,17 +2,30 @@
 // Dreamadmin views
 //////////////////////////////////////////
 use axum::{
+    extract::{Path, State},
     http::StatusCode,
     response::{IntoResponse, Redirect},
     Form,
 };
+use std::sync::Arc;
 
 use crate::auth::{AuthSession, Credentials};
-use crate::templates::{HtmlTemplate, LoginTemplate, AdminTemplate};
+use crate::templates::{HtmlTemplate, LoginTemplate, AdminTemplate, SealDetailTemplate};
+use crate::AdminState;
+use tzolkin::{get_all_seals, get_seal};
 
-pub async fn admin() -> HtmlTemplate<AdminTemplate> {
+pub async fn admin(State(state): State<Arc<AdminState>>) -> HtmlTemplate<AdminTemplate> {
     tracing::info!("Admin dashboard accessed");
-    HtmlTemplate(AdminTemplate)
+    
+    let seals = match get_all_seals(&state.db_pool).await {
+        Ok(seals) => seals,
+        Err(e) => {
+            tracing::error!(error = %e, "Failed to fetch seals");
+            Vec::new()
+        }
+    };
+    
+    HtmlTemplate(AdminTemplate { seals })
 }
 
 pub async fn login_get() -> HtmlTemplate<LoginTemplate> {
@@ -63,6 +76,23 @@ pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
         Err(_) => {
             tracing::error!("Failed to logout");
             Redirect::to("/login").into_response()
+        }
+    }
+}
+
+pub async fn seal_detail(
+    State(state): State<Arc<AdminState>>,
+    Path(id): Path<u32>,
+) -> impl IntoResponse {
+    tracing::info!(seal_id = %id, "Seal detail page accessed");
+    
+    match get_seal(&state.db_pool, id).await {
+        Ok(seal) => {
+            HtmlTemplate(SealDetailTemplate { seal }).into_response()
+        }
+        Err(e) => {
+            tracing::error!(seal_id = %id, error = %e, "Failed to fetch seal");
+            (StatusCode::NOT_FOUND, "Seal not found").into_response()
         }
     }
 }
