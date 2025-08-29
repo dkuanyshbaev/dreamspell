@@ -95,7 +95,7 @@ SECRET=your_secure_admin_password
 DB_LOCATION=/srv/dreambase/dreambase.db
 
 # /srv/dreambot/.env
-SECRET=your_telegram_bot_token
+TELOXIDE_TOKEN=your_telegram_bot_token
 DB_LOCATION=/srv/dreambase/dreambase.db
 ```
 

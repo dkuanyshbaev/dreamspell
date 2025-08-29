@@ -66,7 +66,7 @@ DB_LOCATION=${DB_PATH}
 EOF
 
 cat > dist/dreambot/.env << EOF
-SECRET=your_bot_secret_here
+TELOXIDE_TOKEN=your_telegram_bot_token_here
 DB_LOCATION=${DB_PATH}
 EOF
 
@@ -150,6 +150,7 @@ rm -f deployment.tar.gz
 
 echo -e "${GREEN}Cleanup completed${NC}"
 echo -e "${YELLOW}Don't forget to:${NC}"
-echo "  1. Update the SECRET values in the .env files on the server (first time only)"
-echo "  2. Ensure the database exists at ${DB_PATH}"
-echo "  3. Your SSL certificates and nginx are already configured"
+echo "  1. Update the SECRET in /srv/dreamadmin/.env (admin password)"
+echo "  2. Update the TELOXIDE_TOKEN in /srv/dreambot/.env (bot token)"
+echo "  3. Ensure the database exists at ${DB_PATH}"
+echo "  4. Your SSL certificates and nginx are already configured"
