@@ -68,6 +68,7 @@ EOF
 cat > dist/dreambot/.env << EOF
 TELOXIDE_TOKEN=your_telegram_bot_token_here
 DB_LOCATION=${DB_PATH}
+SEALS_LOCATION=/srv/dreamspell/static/img/seals
 EOF
 
 # Step 3.5: Create compressed deployment archive

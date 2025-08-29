@@ -64,6 +64,30 @@ cargo build --bin dreambot --release
 cargo build --bin dreamadmin --release
 ```
 
+## Deployment
+
+### 1. Prepare the Deployment Script
+
+Edit `scripts/deploy.sh` and update:
+```bash
+SERVER_USER="your_username"
+SERVER_HOST="your_server_ip_or_domain"
+```
+
+### 2. Run Deployment
+
+```bash
+./scripts/deploy.sh
+```
+
+This script will:
+- Build all binaries in release mode
+- Create deployment packages
+- Upload to server
+- Create backups of existing deployment
+- Install new files
+- Restart services
+
 ## License
 
 MIT
