@@ -1,0 +1,14 @@
+[Unit]
+Description=Dreamadmin
+After=network.target
+
+[Service]
+User=denis
+Group=denis
+WorkingDirectory=/srv/dreamadmin
+EnvironmentFile=/srv/dreamadmin/.env
+ExecStart=/srv/dreamadmin/dreamadmin
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

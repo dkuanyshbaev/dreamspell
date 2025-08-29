@@ -1,0 +1,14 @@
+[Unit]
+Description=Dreambot
+After=network.target
+
+[Service]
+User=denis
+Group=denis
+WorkingDirectory=/srv/dreambot
+EnvironmentFile=/srv/dreambot/.env
+ExecStart=/srv/dreambot/dreambot
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

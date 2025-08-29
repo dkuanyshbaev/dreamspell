@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dreamadmin</title>
-    <link rel="stylesheet" href="/static/water.css">
+    <link rel="stylesheet" href="/admin/static/water.css">
     <style>
         body {
             display: flex;
@@ -28,7 +28,7 @@
             {% when None %}
         {% endmatch %}
 
-        <form method="post" action="/login">
+        <form method="post" action="/admin/login">
             <input type="password" id="password" name="password" required autofocus>
             <button type="submit">Войти</button>
         </form>

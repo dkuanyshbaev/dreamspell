@@ -90,16 +90,16 @@ pub async fn login_post(
 }
 
 pub async fn root_redirect() -> impl IntoResponse {
-    Redirect::to("/login")
+    Redirect::to("/admin/login")
 }
 
 pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
     tracing::info!("Admin logout");
     match auth_session.logout().await {
-        Ok(_) => Redirect::to("/login").into_response(),
+        Ok(_) => Redirect::to("/admin/login").into_response(),
         Err(_) => {
             tracing::error!("Failed to logout");
-            Redirect::to("/login").into_response()
+            Redirect::to("/admin/login").into_response()
         }
     }
 }

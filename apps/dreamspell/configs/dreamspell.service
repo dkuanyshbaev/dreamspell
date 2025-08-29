@@ -1,0 +1,14 @@
+[Unit]
+Description=Dreamspell
+After=network.target
+
+[Service]
+User=denis
+Group=denis
+WorkingDirectory=/srv/dreamspell
+EnvironmentFile=/srv/dreamspell/.env
+ExecStart=/srv/dreamspell/dreamspell
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

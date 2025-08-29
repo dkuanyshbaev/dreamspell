@@ -20,7 +20,7 @@
 
 <form method="post" action="/admin/seal/{{ seal.id }}">
     <h3>Изображение</h3>
-    <img src="/static/seals/{{ seal.image }}" alt="{{ seal.name }}" style="max-width: 200px; height: auto; display: block; margin-bottom: 20px;">
+    <img src="/admin/static/seals/{{ seal.image }}" alt="{{ seal.name }}" style="max-width: 200px; height: auto; display: block; margin-bottom: 20px;">
     <input type="hidden" name="image" value="{{ seal.image }}">
 
     <h3>Название</h3>
