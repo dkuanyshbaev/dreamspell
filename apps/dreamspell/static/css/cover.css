@@ -56,7 +56,7 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: #302b63; /* Lighter purple-blue from original gradient middle */
   min-height: 100vh;
   /* Removed aggressive text shadow */
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
