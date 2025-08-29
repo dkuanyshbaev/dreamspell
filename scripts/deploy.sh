@@ -70,67 +70,83 @@ SECRET=your_bot_secret_here
 DB_LOCATION=${DB_PATH}
 EOF
 
+# Step 3.5: Create compressed deployment archive
+echo -e "${YELLOW}Creating deployment archive...${NC}"
+tar -czf deployment.tar.gz -C dist .
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Failed to create deployment archive${NC}"
+    exit 1
+fi
+echo -e "${GREEN}Deployment archive created: $(du -h deployment.tar.gz | cut -f1)${NC}"
+
 # Step 4: Deploy to server
 echo -e "${YELLOW}Deploying to server ${SERVER_HOST}...${NC}"
 
-# Create backup of existing deployment
+# Upload deployment archive
+echo -e "${YELLOW}Uploading deployment archive...${NC}"
+scp deployment.tar.gz ${SERVER_USER}@${SERVER_HOST}:/tmp/
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Failed to upload deployment archive${NC}"
+    exit 1
+fi
+
+# Deploy on server
 ssh ${SERVER_USER}@${SERVER_HOST} << 'EOF'
+    set -e  # Exit on error
+    
+    # Stop services and create backup
     if [ -d /srv/dreamspell ]; then
-        echo "Creating backup of existing deployment..."
-        sudo cp -r /srv/dreamspell /srv/dreamspell.backup.$(date +%Y%m%d_%H%M%S)
+        echo "Stopping services and creating backup..."
+        systemctl stop dreamspell || true
+        systemctl stop dreamadmin || true  
+        systemctl stop dreambot || true
+        
+        BACKUP_DIR="/srv/backup.$(date +%Y%m%d_%H%M%S)"
+        mkdir -p "${BACKUP_DIR}"
+        cp -r /srv/dreamspell "${BACKUP_DIR}/" 2>/dev/null || true
+        cp -r /srv/dreamadmin "${BACKUP_DIR}/" 2>/dev/null || true
+        cp -r /srv/dreambot "${BACKUP_DIR}/" 2>/dev/null || true
+        echo "Backup created at ${BACKUP_DIR}"
+        
+        rm -rf /srv/dreamspell /srv/dreamadmin /srv/dreambot
     fi
-    if [ -d /srv/dreamadmin ]; then
-        sudo cp -r /srv/dreamadmin /srv/dreamadmin.backup.$(date +%Y%m%d_%H%M%S)
+    
+    # Extract new deployment
+    echo "Extracting deployment archive..."
+    cd /srv
+    tar -xzf /tmp/deployment.tar.gz
+    if [ $? -ne 0 ]; then
+        echo "Failed to extract deployment archive"
+        exit 1
     fi
-    if [ -d /srv/dreambot ]; then
-        sudo cp -r /srv/dreambot /srv/dreambot.backup.$(date +%Y%m%d_%H%M%S)
-    fi
-EOF
-
-# Upload new files
-scp -r dist/dreamspell ${SERVER_USER}@${SERVER_HOST}:/tmp/
-scp -r dist/dreamadmin ${SERVER_USER}@${SERVER_HOST}:/tmp/
-scp -r dist/dreambot ${SERVER_USER}@${SERVER_HOST}:/tmp/
-
-# Move files to /srv and set permissions
-ssh ${SERVER_USER}@${SERVER_HOST} << 'EOF'
-    echo "Installing new deployment..."
-
-    # Stop services
-    sudo systemctl stop dreamspell || true
-    sudo systemctl stop dreamadmin || true
-    sudo systemctl stop dreambot || true
-
-    # Move files
-    sudo rm -rf /srv/dreamspell /srv/dreamadmin /srv/dreambot
-    sudo mv /tmp/dreamspell /srv/
-    sudo mv /tmp/dreamadmin /srv/
-    sudo mv /tmp/dreambot /srv/
-
-    # Set permissions
-    sudo chown -R denis:denis /srv/dreamspell
-    sudo chown -R denis:denis /srv/dreamadmin
-    sudo chown -R denis:denis /srv/dreambot
-
-    sudo chmod +x /srv/dreamspell/dreamspell
-    sudo chmod +x /srv/dreamadmin/dreamadmin
-    sudo chmod +x /srv/dreambot/dreambot
-
+    
+    # Set executable permissions
+    chmod +x /srv/dreamspell/dreamspell
+    chmod +x /srv/dreamadmin/dreamadmin
+    chmod +x /srv/dreambot/dreambot
+    chmod +x /srv/install-services.sh
+    
+    # Clean up
+    rm -f /tmp/deployment.tar.gz
+    
     # Start services
-    sudo systemctl start dreamspell
-    sudo systemctl start dreamadmin
-    sudo systemctl start dreambot
+    echo "Starting services..."
+    systemctl start dreamspell || echo "dreamspell service not installed yet"
+    systemctl start dreamadmin || echo "dreamadmin service not installed yet"
+    systemctl start dreambot || echo "dreambot service not installed yet"
 
     # Check status
-    sudo systemctl status dreamspell --no-pager
-    sudo systemctl status dreamadmin --no-pager
-    sudo systemctl status dreambot --no-pager
+    echo "Service status:"
+    systemctl status dreamspell --no-pager --lines=3 || true
+    systemctl status dreamadmin --no-pager --lines=3 || true
+    systemctl status dreambot --no-pager --lines=3 || true
 EOF
 
 echo -e "${GREEN}Deployment completed successfully!${NC}"
 
 # Cleanup
 rm -rf dist
+rm -f deployment.tar.gz
 
 echo -e "${GREEN}Cleanup completed${NC}"
 echo -e "${YELLOW}Don't forget to:${NC}"
