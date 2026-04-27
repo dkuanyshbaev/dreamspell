@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Замок Судьбы{% endblock %}
+
+{% block content %}
+<style>
+    .btn-primary {
+        background-color: #0070f3;
+        color: white;
+        border: none;
+    }
+</style>
+<h2>Замок Судьбы</h2>
+<form method="post" action="/admin/castle" target="_blank">
+    <label for="birth_date">Дата рождения:</label>
+    <input type="date" id="birth_date" name="birth_date" required>
+    <button type="submit" class="btn-primary">Построить</button>
+</form>
+{% endblock %}

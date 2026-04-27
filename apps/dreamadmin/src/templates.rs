@@ -26,6 +26,10 @@ pub struct SealDetailTemplate {
     pub seal: Seal,
 }
 
+#[derive(Template)]
+#[template(path = "castle.html")]
+pub struct CastleTemplate;
+
 pub struct HtmlTemplate<T>(pub T);
 
 impl<T> IntoResponse for HtmlTemplate<T>
@@ -37,11 +41,7 @@ where
             Ok(html) => Html(html).into_response(),
             Err(err) => {
                 tracing::error!(error = %err, "Failed to render template");
-                (
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    "Internal server error",
-                )
-                    .into_response()
+                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error").into_response()
             }
         }
     }

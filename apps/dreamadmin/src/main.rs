@@ -3,10 +3,7 @@
 //////////////////////////////////////////
 use std::{env, sync::Arc};
 
-use axum::{
-    routing::{get, Router},
-};
-use tower_http::services::ServeDir;
+use axum::routing::{get, Router};
 use axum_login::{
     login_required,
     tower_sessions::{session_store::ExpiredDeletion, Expiry, SessionManagerLayer},
@@ -14,10 +11,12 @@ use axum_login::{
 };
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use time::Duration;
+use tower_http::services::ServeDir;
 use tower_sessions_sqlx_store::SqliteStore;
-use tracing_subscriber;
 
-use views::{admin, health, login_get, login_post, logout, nothing, root_redirect};
+use views::{
+    admin, castle, castle_build, health, login_get, login_post, logout, nothing, root_redirect,
+};
 
 pub mod auth;
 pub mod templates;
@@ -38,7 +37,7 @@ async fn main() -> Result<(), sqlx::Error> {
         .with_env_filter("dreamadmin=info,tower_http=info")
         .init();
     tracing::info!("Initializing Dreamadmin server");
-    
+
     let secret = env::var("SECRET").expect("SECRET must be set");
     let db_location = env::var("DB_LOCATION").expect("DB_LOCATION must be set");
     tracing::info!(db_location = %db_location, "Connecting to database");
@@ -50,7 +49,7 @@ async fn main() -> Result<(), sqlx::Error> {
     // Session layer.
     let session_store = SqliteStore::new(db_pool.clone());
     session_store.migrate().await?;
-    
+
     let state = Arc::new(AdminState { db_pool });
 
     let deletion_task = tokio::task::spawn(
@@ -68,7 +67,11 @@ async fn main() -> Result<(), sqlx::Error> {
 
     let app = Router::new()
         .route("/admin", get(admin))
-        .route("/admin/seal/{id}", get(views::seal_detail).post(views::seal_update))
+        .route(
+            "/admin/seal/{id}",
+            get(views::seal_detail).post(views::seal_update),
+        )
+        .route("/admin/castle", get(castle).post(castle_build))
         .route("/admin/logout", get(logout))
         .route_layer(login_required!(auth::Backend, login_url = "/admin/login"))
         .route("/admin/login", get(login_get).post(login_post))

@@ -15,8 +15,8 @@ use crate::templates::{
     HomeEnTemplate, HomeTemplate, HowToEnTemplate, HowToTemplate, HtmlTemplate, OfertaEnTemplate,
     OfertaTemplate, ResultEnTemplate, ResultTemplate,
 };
-use tzolkin::{Language, Tzolkin};
 use crate::DreamState;
+use tzolkin::{Language, Tzolkin};
 
 #[derive(Deserialize, Debug)]
 pub struct Input {
@@ -39,7 +39,7 @@ fn validate_date(input: &str) -> Result<[u32; 3], String> {
         .map_err(|_| "Invalid date format. Use YYYY-MM-DD".to_string())?;
 
     let year = date.year() as u32;
-    if year < 1900 || year > 2100 {
+    if !(1900..=2100).contains(&year) {
         return Err("Year must be between 1900 and 2100".to_string());
     }
 

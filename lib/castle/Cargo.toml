@@ -1,0 +1,9 @@
+[package]
+name = "castle"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tzolkin = { path = "../tzolkin" }
+chrono = { workspace = true }
+svg2pdf = "0.13"

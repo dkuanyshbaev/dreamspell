@@ -5,7 +5,9 @@ edition.workspace = true
 
 [dependencies]
 tzolkin = { path = "../../lib/tzolkin" }
+castle = { path = "../../lib/castle" }
 axum = { workspace = true }
+chrono = { workspace = true }
 axum-login = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tower-http = { workspace = true, features = ["fs", "limit"] }

@@ -3,10 +3,11 @@
 //////////////////////////////////////////
 use axum::{
     extract::{Path, State},
-    http::StatusCode,
+    http::{header, StatusCode},
     response::{IntoResponse, Redirect},
     Form, Json,
 };
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -36,9 +37,52 @@ pub struct SealForm {
 }
 
 use crate::auth::{AuthSession, Credentials};
-use crate::templates::{HtmlTemplate, LoginTemplate, AdminTemplate, SealDetailTemplate};
+use crate::templates::{
+    AdminTemplate, CastleTemplate, HtmlTemplate, LoginTemplate, SealDetailTemplate,
+};
 use crate::AdminState;
 use tzolkin::{get_all_seals, get_seal, update_seal, Seal};
+
+#[derive(Deserialize)]
+pub struct CastleForm {
+    pub birth_date: String,
+}
+
+pub async fn castle() -> HtmlTemplate<CastleTemplate> {
+    HtmlTemplate(CastleTemplate)
+}
+
+pub async fn castle_build(Form(form): Form<CastleForm>) -> impl IntoResponse {
+    let date = match NaiveDate::parse_from_str(&form.birth_date, "%Y-%m-%d") {
+        Ok(d) => d,
+        Err(e) => {
+            tracing::warn!(date = %form.birth_date, error = %e, "Invalid date submitted");
+            return Redirect::to("/admin/castle").into_response();
+        }
+    };
+
+    match castle::render_pdf(date) {
+        Ok(pdf) => {
+            let filename = format!("dreamcastle_{date}.pdf");
+            (
+                StatusCode::OK,
+                [
+                    (header::CONTENT_TYPE, "application/pdf".to_string()),
+                    (
+                        header::CONTENT_DISPOSITION,
+                        format!("inline; filename=\"{filename}\""),
+                    ),
+                ],
+                pdf,
+            )
+                .into_response()
+        }
+        Err(e) => {
+            tracing::error!(error = %e, "Failed to render PDF");
+            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to render PDF").into_response()
+        }
+    }
+}
 
 pub async fn admin(State(state): State<Arc<AdminState>>) -> HtmlTemplate<AdminTemplate> {
     let seals = match get_all_seals(&state.db_pool).await {
@@ -48,7 +92,7 @@ pub async fn admin(State(state): State<Arc<AdminState>>) -> HtmlTemplate<AdminTe
             Vec::new()
         }
     };
-    
+
     HtmlTemplate(AdminTemplate { seals })
 }
 
@@ -61,7 +105,7 @@ pub async fn login_post(
     Form(credentials): Form<Credentials>,
 ) -> impl IntoResponse {
     tracing::info!("Login attempt");
-    
+
     match auth_session.authenticate(credentials.clone()).await {
         Ok(Some(user)) => {
             if auth_session.login(&user).await.is_ok() {
@@ -109,9 +153,7 @@ pub async fn seal_detail(
     Path(id): Path<u32>,
 ) -> impl IntoResponse {
     match get_seal(&state.db_pool, id).await {
-        Ok(seal) => {
-            HtmlTemplate(SealDetailTemplate { seal }).into_response()
-        }
+        Ok(seal) => HtmlTemplate(SealDetailTemplate { seal }).into_response(),
         Err(e) => {
             tracing::error!(seal_id = %id, error = %e, "Failed to fetch seal");
             (StatusCode::NOT_FOUND, "Seal not found").into_response()
@@ -125,7 +167,7 @@ pub async fn seal_update(
     Form(form): Form<SealForm>,
 ) -> impl IntoResponse {
     tracing::info!(seal_id = %id, "Seal update requested");
-    
+
     let seal = Seal {
         id: id as u8,
         name: form.name,
@@ -143,7 +185,7 @@ pub async fn seal_update(
         type_description_short: form.type_description_short,
         type_description_en: form.type_description_en,
     };
-    
+
     match update_seal(&state.db_pool, &seal).await {
         Ok(_) => {
             tracing::info!(seal_id = %id, "Seal updated successfully");
@@ -155,8 +197,6 @@ pub async fn seal_update(
         }
     }
 }
-
-
 
 pub async fn health(State(state): State<Arc<AdminState>>) -> impl IntoResponse {
     // Check database connectivity
@@ -194,4 +234,3 @@ pub async fn nothing() -> impl IntoResponse {
     tracing::warn!("404 Not Found - unknown route requested");
     (StatusCode::NOT_FOUND, "Not found")
 }
-

@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "lib/tzolkin",
+    "lib/castle",
     "apps/dreamspell",
     "apps/dreambot",
     "apps/dreamadmin",
